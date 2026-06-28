@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Arena Rubra</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="appSplash" class="appSplash" role="dialog" aria-modal="true" aria-label="Intro Arena Rubra" data-splash-phase="boot">
+    <div class="splashSlides" aria-hidden="true">
+      <div class="splashSlide splashSlideDev" data-splash-panel="dev">
+        <img src="assets/intro/g-vibe-dev-logo.png" alt="" />
+      </div>
+      <div class="splashSlide splashSlideTitle" data-splash-panel="title">
+        <img src="assets/intro/arena-rubra-title.png" alt="" />
+      </div>
+    </div>
+    <div class="splashShade"></div>
+    <div class="splashUi">
+      <button class="primary splashEnterBtn" id="splashEnterBtn" type="button">Starter Game : Blueprint</button>
+    </div>
+  </div>
+  <audio id="introMusic" src="assets/audio/432-hertz-rift.mp3" preload="auto" autoplay loop playsinline></audio>
+
+  <section id="mainMenuScreen" class="appScreen mainMenuScreen" data-app-screen-panel="mainMenu" aria-label="Menu principale Arena Rubra">
+    <div class="mainMenuBackdrop"></div>
+    <div class="mainMenuCard">
+      <div class="mainMenuKicker">G Vibe Dev presenta</div>
+      <h1><span id="buildAppName">Arena Rubra</span></h1>
+      <div class="mainMenuStage" id="buildStage">Starter Game ALPHA</div>
+      <div class="mainMenuBuildBox">
+        <div><strong>Build</strong> <span id="menuBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span></div>
+        <div><strong>Patch</strong> <span id="menuBuildName">Deck Builder Read/Validate Foundation</span></div>
+        <div><strong>Baseline</strong> <span id="menuLogicBaseline">C2-STABLE-1-APK-M4c</span></div>
+        <div><strong>Canale</strong> <span id="menuBuildChannel">freeze-candidate</span></div>
+        <div><strong>Data</strong> <span id="menuBuildDate">2026-06-27</span></div>
+      </div>
+      <div class="mainMenuActions">
+        <button class="primary" id="mainMenuNewGameBtn" type="button">Nuova partita</button>
+        <button class="ghost" id="mainMenuResumeBtn" type="button">Riprendi schermata partita</button>
+        <button class="ghost" data-app-open-deck-builder type="button">Costruisci deck</button>
+        <button class="ghost" data-app-placeholder-screen="cardEditor" type="button">Crea / modifica carta</button>
+        <button class="ghost" data-app-placeholder-screen="cardPool" type="button">Pool carte</button>
+        <button class="ghost" data-app-placeholder-screen="stats" type="button">Statistiche / log test</button>
+        <button class="ghost" data-app-placeholder-screen="options" type="button">Opzioni / debug</button>
+        <button class="ghost" data-app-placeholder-screen="about" type="button">Informazioni versione</button>
+      </div>
+      <p class="mainMenuNotes" id="menuBuildNotes">Fase 9D: PanelManager foundation, pannelli richiamabili con scrim senza modifiche alla logica Starter.</p>
+    </div>
+  </section>
+
+  <section id="setupScreen" class="appScreen setupScreen" data-app-screen-panel="setup" aria-label="Setup nuova partita Arena Rubra">
+    <div class="mainMenuBackdrop"></div>
+    <div class="setupScreenCard">
+      <div class="mainMenuKicker">Nuova partita</div>
+      <h2>Setup Starter MAP1</h2>
+      <p class="setupIntro">Scegli fazioni, comandanti, controllo giocatori e ritmo. La logica Starter resta congelata: questa schermata prepara solo i dati di avvio della partita.</p>
+
+      <div class="setupScreenGrid">
+        <section class="setupSideBox faction-nexus-box">
+          <h3>Giocatore 1</h3>
+          <label for="setupP1Faction">Fazione</label>
+          <select id="setupP1Faction">
+            <option value="Nexus">Nexus</option>
+            <option value="Exordium">Exordium</option>
+            <option value="Liberti">Liberti</option>
+            <option value="Agathoi">Agathoi</option>
+            <option value="Fabeot">Fabeot</option>
+          </select>
+          <label for="setupP1Commander">Comandante</label>
+          <select id="setupP1Commander"></select>
+          <label for="setupP1Mode">Controllo</label>
+          <select id="setupP1Mode">
+            <option value="human">Umano</option>
+            <option value="bot">Bot</option>
+          </select>
+        </section>
+
+        <section class="setupSideBox faction-exordium-box">
+          <h3>Giocatore 2</h3>
+          <label for="setupP2Faction">Fazione</label>
+          <select id="setupP2Faction">
+            <option value="Exordium">Exordium</option>
+            <option value="Nexus">Nexus</option>
+            <option value="Liberti">Liberti</option>
+            <option value="Agathoi">Agathoi</option>
+            <option value="Fabeot">Fabeot</option>
+          </select>
+          <label for="setupP2Commander">Comandante</label>
+          <select id="setupP2Commander"></select>
+          <label for="setupP2Mode">Controllo</label>
+          <select id="setupP2Mode">
+            <option value="bot">Bot</option>
+            <option value="human">Umano</option>
+          </select>
+        </section>
+      </div>
+
+      <section class="setupMatchBox">
+        <h3>Parametri match</h3>
+        <div class="setupMatchGrid">
+          <div>
+            <label for="setupPacePreset">Preset ritmo</label>
+            <select id="setupPacePreset">
+              <option value="standard" selected>Standard</option>
+              <option value="competitive">Rapida / Competitive</option>
+            </select>
+          </div>
+          <div>
+            <label for="setupInitiativeMode">Iniziativa iniziale</label>
+            <select id="setupInitiativeMode">
+              <option value="random">Casuale</option>
+              <option value="1">Giocatore 1</option>
+              <option value="2">Giocatore 2</option>
+            </select>
+          </div>
+          <div>
+            <label for="setupMapName">Mappa</label>
+            <select id="setupMapName" disabled>
+              <option>Starter MAP1 · radius 6</option>
+            </select>
+          </div>
+          <div>
+            <label for="setupBotAiMode">AI dei bot</label>
+            <select id="setupBotAiMode">
+              <option value="base">Base v0.9</option>
+              <option value="advanced" selected>Avanzata v1.8.11</option>
+            </select>
+          </div>
+        </div>
+        <label class="checkline setupCheckline"><input id="setupAutoResignToggle" type="checkbox" checked /> Resa tecnica automatica dei bot</label>
+      </section>
+
+      <div class="setupScreenActions">
+        <button class="ghost" id="setupBackMenuBtn" type="button">Torna al menu</button>
+        <button class="primary" id="setupStartGameBtn" type="button">Avvia partita</button>
+      </div>
+      <p class="mainMenuNotes">Build <span id="setupBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span> · <span id="setupBuildName">Deck Builder Read/Validate Foundation</span></p>
+    </div>
+  </section>
+
+  <section id="deckBuilderScreen" class="appScreen deckBuilderScreen" data-app-screen-panel="deckBuilder" aria-label="Costruisci deck Arena Rubra">
+    <div class="mainMenuBackdrop"></div>
+    <div class="deckBuilderCard">
+      <div class="deckBuilderHeader">
+        <div>
+          <div class="mainMenuKicker">Deck Builder</div>
+          <h2>Costruisci deck</h2>
+          <p class="deckBuilderIntro">F9H1 è una fondazione di lettura e validazione: mostra pool, starter esclusi, template deck e regole copie. Non salva deck e non modifica le partite.</p>
+        </div>
+        <div class="deckBuilderHeaderActions">
+          <button class="ghost" id="deckBuilderCopyJsonBtn" type="button">Copia report JSON</button>
+          <button class="primary" data-app-back-menu type="button">Torna al menu</button>
+        </div>
+      </div>
+
+      <div class="deckBuilderControls">
+        <div>
+          <label for="deckBuilderFactionSelect">Fazione</label>
+          <select id="deckBuilderFactionSelect"></select>
+        </div>
+        <div>
+          <label for="deckBuilderCommanderSelect">Comandante</label>
+          <select id="deckBuilderCommanderSelect"></select>
+        </div>
+        <div class="deckBuilderMeta" id="deckBuilderMetaLine">C2-STABLE-1-F9H1-APK-M4c · read/validate only</div>
+      </div>
+
+      <section id="deckBuilderSummary" class="deckBuilderSummary" aria-live="polite"></section>
+
+      <div class="deckBuilderColumns">
+        <section class="deckBuilderBox">
+          <h3>Starter esclusi dal deck</h3>
+          <div id="deckBuilderStarterBox"></div>
+        </section>
+        <section class="deckBuilderBox">
+          <h3>Template deck generato</h3>
+          <div class="deckBuilderTableWrap">
+            <table class="deckBuilderTable">
+              <thead><tr><th>ID</th><th>Carta</th><th>Ruolo</th><th>ENE</th><th>Copie</th><th>Tipo</th></tr></thead>
+              <tbody id="deckBuilderDeckBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <section class="deckBuilderBox deckBuilderPoolBox">
+        <h3>Pool legale della fazione</h3>
+        <div class="deckBuilderTableWrap deckBuilderPoolTableWrap">
+          <table class="deckBuilderTable">
+            <thead><tr><th>ID</th><th>Carta</th><th>Ruolo</th><th>Tipo</th><th>ENE</th><th>Nel template</th><th>Testo / nota</th></tr></thead>
+            <tbody id="deckBuilderPoolBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section id="appPlaceholderScreen" class="appScreen appPlaceholderScreen" data-app-screen-panel="placeholder" aria-label="Placeholder schermata futura">
+    <div class="placeholderCard">
+      <h2>Schermata futura</h2>
+      <p id="appPlaceholderMessage">Placeholder F9H1.</p>
+      <button class="primary" data-app-back-menu type="button">Torna al menu</button>
+    </div>
+  </section>
+
+  <div id="gameScreen" class="gameScreen" data-app-screen-panel="game">
+  <header class="topTitleBar">
+    <div class="topBarAction topBarLeft">
+      <button class="ghost topBarBtn compactTopBarBtn" id="returnMainMenuBtn" type="button">Menu</button>
+      <button class="primary topBarBtn" id="newGameBtn" type="button">Nuova partita</button>
+    </div>
+    <div class="topBarTitle">
+      <h1>ARENA RUBRA - <span id="topBuildStage">Starter Game ALPHA</span> <span>(<span id="topBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span>)</span></h1>
+    </div>
+    <div class="topBarAction topBarRight">
+      <button class="danger topBarBtn" id="endTurnBtn" type="button">Fine turno</button>
+    </div>
+  </header>
+
+  <section class="gameHudStrip" id="gameHudStrip" aria-label="HUD compatta partita">
+    <span class="hudChip hudPrimary" id="gameHudRound">R—</span>
+    <span class="hudChip" id="gameHudTurn">Turno: —</span>
+    <span class="hudChip" id="gameHudEnergy">ENE —</span>
+    <span class="hudChip" id="gameHudPs">PS —</span>
+    <span class="hudChip" id="gameHudPressure">Pressione —</span>
+    <span class="hudChip" id="gameHudCards">Deck/Mano/Scarti —</span>
+    <span class="hudChip hudMode" id="gameHudMode">Pronto</span>
+    <span class="hudChip hudCamera" id="gameHudCamera">Camera: Fit</span>
+    <span class="hudChip hudBuild" id="gameHudBuild">C2-STABLE-1-F9H1-APK-M4c</span>
+  </section>
+
+  <main class="app mapFirstGameApp" id="mapFirstGameApp">
+    <section class="panel setupPanel" data-game-panel="setup">
+      <details id="gameOptionsDetails" open>
+        <summary>Opzioni di gioco</summary>
+        <div class="body stack">
+        <div id="winnerBanner" class="banner"></div>
+        <div class="row playerSetupRow">
+          <div class="setupField factionField">
+            <label for="p1Faction">Giocatore 1 · Fazione</label>
+            <select id="p1Faction">
+              <option value="Nexus">Nexus</option>
+              <option value="Exordium">Exordium</option>
+              <option value="Liberti">Liberti</option>
+              <option value="Agathoi">Agathoi</option>
+              <option value="Fabeot">Fabeot</option>
+            </select>
+          </div>
+          <div class="setupField commanderField">
+            <label for="p1Commander">Giocatore 1 · Comandante</label>
+            <select id="p1Commander"></select>
+          </div>
+          <div class="setupField modeField">
+            <label for="p1Mode">Giocatore 1 · Controllo</label>
+            <select id="p1Mode">
+              <option value="human">Umano</option>
+              <option value="bot">Bot</option>
+            </select>
+          </div>
+        </div>
+        <div class="row playerSetupRow">
+          <div class="setupField factionField">
+            <label for="p2Faction">Giocatore 2 · Fazione</label>
+            <select id="p2Faction">
+              <option value="Exordium">Exordium</option>
+              <option value="Nexus">Nexus</option>
+              <option value="Liberti">Liberti</option>
+              <option value="Agathoi">Agathoi</option>
+              <option value="Fabeot">Fabeot</option>
+            </select>
+          </div>
+          <div class="setupField commanderField">
+            <label for="p2Commander">Giocatore 2 · Comandante</label>
+            <select id="p2Commander"></select>
+          </div>
+          <div class="setupField modeField">
+            <label for="p2Mode">Giocatore 2 · Controllo</label>
+            <select id="p2Mode">
+              <option value="bot">Bot</option>
+              <option value="human">Umano</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="initiativeMode">Iniziativa iniziale</label>
+          <select id="initiativeMode">
+            <option value="random">Casuale</option>
+            <option value="1">Giocatore 1</option>
+            <option value="2">Giocatore 2</option>
+          </select>
+        </div>
+        <div>
+          <label for="botAiMode">AI dei bot</label>
+          <select id="botAiMode">
+            <option value="base">Base v0.9</option>
+            <option value="advanced" selected>Avanzata v1.8.11</option>
+          </select>
+        </div>
+        <div>
+          <label for="pacePreset">Preset ritmo</label>
+          <select id="pacePreset">
+            <option value="standard" selected>Standard</option>
+            <option value="competitive">Rapida / Competitive</option>
+          </select>
+        </div>
+        <button class="ghost" id="runBotBtn">Esegui bot / continua</button>
+        <button class="danger" id="concedeBtn">Concedi partita</button>
+        <label class="checkline"><input id="autoResignToggle" type="checkbox" checked /> Resa tecnica automatica dei bot</label>
+
+        <div class="scorebox">
+          <div class="score">
+            <strong id="p1Title">Giocatore 1</strong>
+            <span id="p1Score">QG libero · ENE: 3</span>
+          </div>
+          <div class="score">
+            <strong id="p2Title">Giocatore 2</strong>
+            <span id="p2Score">QG libero · ENE: 3</span>
+          </div>
+        </div>
+
+        <div class="unitCard" id="turnInfo"></div>
+        <div class="help">
+          <strong>Regole Starter Freeze <span id="freezeRulesBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span>:</strong> Ogni fazione può scegliere 1 comandante tra 2 opzioni; il comandante scelto entra come unica carta comandante del deck/mano iniziale.  il QG resta una cella-obiettivo vuota e occupabile. Si vince se una propria unità occupa il QG avversario mentre si controlla almeno un PS. Le unità possono sbarcare accanto al QG o accanto a edifici alleati. Income: 3 ENE base + PS. Preset <b>Standard</b>: Pressione dal round 30, cap leggere 10, veicoli movimento 1. Preset <b>Rapida/Competitive</b>: Pressione dal round 20, cap leggere 5 per fazione / 7 per Liberti, veicoli movimento 2. Pesanti 2 in campo per blueprint; elite/pivot e comandante 1; massimo 6 strutture, Agathoi 7. Il sanguinamento infligge danno diretto agli HP; Spine punisce chi attacca. Dottrine economiche a inizio turno: Nexus ottimizza se tiene 2 PS senza vantaggio ENE eccessivo; Exordium premia parità fanteria/veicoli; Liberti premia minaccia al QG; Agathoi cresce sulla pressione subita; Fabeot prospera quando l'avversario resta a 0 ENE. Mano: cap 10 carte; le pescate oltre cap vanno direttamente negli scarti. Se deck e mano sono vuoti, con 5 ENE si rimescolano gli scarti nel deck e si pescano 3 carte. Dottrina AI C2e-4h: base generale C2e-4a2, integration/regression C2e-4g e dottrina superiore matchup attive per Exordium, Fabeot e Agathoi. Fine Balance C2e-5a: Protocollo di Blocco Nexus infligge 1 danno e costa 1 ENE. MAP1 C2e-6a validata: mappa Starter radius 6, QG sui nuovi bordi esterni e PS invariati per funzione tattica con maggiore spazio di manovra laterale/esterno. Starter Logic Freeze C2-STABLE-1: da questa build la logica Starter è candidata al congelamento; ammessi solo bugfix e interventi non sistemici. Fabeot usa QG bait, split pressure, pazienza nella metà alleata e surrender pressure per colpire comandanti, pivot, PS, mano e risorse quando l’avversario è scoperto. UX tattica D1b: le unità mostrano in mappa HP, DEF e ATT in formato compatto e leggibile; la selezione di una propria unità mobile evidenzia subito le celle raggiungibili.
+        </div>
+
+
+        <details>
+          <summary>Roster usato nel test</summary>
+          <div id="rosterTable"></div>
+        </details>
+
+        <details>
+          <summary>Architettura v1.8.11c</summary>
+          <div class="help">
+            <strong>Refactor interno:</strong> dati fazione/abilità/stati separati in registri; funzioni generiche <em>canAct/canMove/canAttack/canUseAbility</em>; costo unità calcolato tramite hook <em>effectiveBlueprintCost</em>; reddito calcolato tramite <em>effectiveIncomeGain</em>; sanguinamento, inibizioni ed effetti economici passano da motori dedicati.
+          </div>
+        </details>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel statsPanel" data-game-panel="stats" aria-label="Statistiche matchup">
+      <details id="statsDetails" open>
+        <summary>Statistiche matchup</summary>
+        <div class="body stack">
+          <div class="help">F9F aggiunge statistiche partita in memoria alimentate dagli eventi tipizzati. Il registro matchup storico resta salvato nel browser locale.</div>
+          <div class="statsToolbar">
+            <button class="ghost" id="copyMatchStatsJsonBtn" type="button">Copia statistiche JSON</button>
+            <button class="ghost" id="copyMatchReportBtn" type="button">Copia report sintetico</button>
+            <button class="ghost" id="copyEventsJsonBtn" type="button">Copia eventi JSON</button>
+            <button class="ghost" id="copyStatsFullLogBtn" type="button">Copia log completo</button>
+          </div>
+          <div id="currentMatchStatsPanel"></div>
+          <details open>
+            <summary>Storico matchup browser</summary>
+            <div class="statsToolbar">
+              <button class="ghost" id="resetStatsBtn" type="button">Reset statistiche</button>
+              <button class="ghost" id="copyStatsBtn" type="button">Copia CSV matchup</button>
+            </div>
+            <div id="matchupStatsPanel"></div>
+            <div id="recentStatsPanel"></div>
+          </details>
+        </div>
+      </details>
+    </section>
+
+    <div class="boardColumn">
+      <section class="panel" id="boardWrap">
+        <div class="mobileMapHud" id="mobileMapHud">
+          <span id="mobileMapHudLabel">APK-M4 · mobile</span>
+          <div class="mobileMapButtons" role="group" aria-label="Comandi mappa mobile">
+            <button class="ghost" id="zoomOutBoardBtn" type="button">−</button>
+            <button class="ghost" id="fitBoardBtn" type="button">Adatta</button>
+            <button class="ghost" id="zoomInBoardBtn" type="button">+</button>
+            <button class="ghost" id="openHandDrawerBtn" type="button">Mano</button>
+            <button class="ghost" id="openCommandDrawerBtn" type="button">Cmd</button>
+            <button class="ghost" id="openSetupDrawerBtn" type="button">Opz</button>
+          </div>
+        </div>
+        <div id="board" aria-label="Mappa esagonale Arena Rubra"></div>
+        <aside id="selectedUnitFloat" class="selectedUnitFloat isCollapsed" aria-label="Unità selezionata e azioni disponibili">
+          <div class="selectedUnitFloatHeader">
+            <strong>Unità selezionata</strong>
+            <button class="ghost compactIconBtn" id="toggleSelectedUnitFloatBtn" type="button" aria-label="Riduci o ingrandisci unità selezionata">+</button>
+          </div>
+          <div class="selectedUnitFloatBody">
+            <div class="unitCard" id="selectedPanel">
+              <h4>Nessuna unità selezionata</h4>
+              <div class="meta">Clicca una tua unità attiva sulla mappa.</div>
+            </div>
+            <div class="stack" id="actionPanel"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel cardDebugDock handPrimaryDock" data-game-panel="hand">
+        <h2>Mano / deck C2</h2>
+        <div class="body">
+          <div id="cardZonePanel" class="cardZonePanel">
+            <div class="unitCard">
+              <h4>Carte non inizializzate</h4>
+              <div class="meta">Avvia una nuova partita per vedere deck, mano, scarti e starter cards.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel marketDock marketDebugDock" data-game-panel="market">
+        <details id="unitMarketDetails">
+          <summary>Mercato unità / Debug roster</summary>
+          <div class="body">
+            <div class="help marketHelp">Pannello legacy di test: acquisto unità da roster. Il flusso principale resta mano/deck C2.</div>
+            <div class="market" id="marketPanel"></div>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <section class="panel tacticDock" data-game-panel="actions" aria-label="Tattiche disponibili">
+      <h2>Tattiche</h2>
+      <div class="body stack">
+        <div class="stack" id="tacticPanel"></div>
+      </div>
+    </section>
+
+    <section class="panel logDock logPanel" id="logDock" data-game-panel="log" aria-label="Log eventi">
+      <div class="logDockHeader">
+        <h3>Log eventi</h3>
+        <button class="ghost compactIconBtn" id="toggleLogDockBtn" type="button" aria-label="Riduci o ingrandisci log eventi">−</button>
+      </div>
+      <div class="statsToolbar logToolbar">
+        <button class="ghost" id="copyLogBtn" type="button">Copia log</button>
+        <button class="ghost" id="exportLogBtn" type="button">Esporta log .txt</button>
+      </div>
+      <div id="log"></div>
+    </section>
+  </main>
+
+  <div id="gamePanelScrim" class="gamePanelScrim" aria-hidden="true" hidden></div>
+
+  <nav class="gameActionBar" id="gameActionBar" aria-label="Azioni rapide partita">
+    <button class="ghost" type="button" data-game-action="fit">Fit</button>
+    <button class="ghost" type="button" data-game-action="focus">Focus</button>
+    <button class="ghost" type="button" data-game-action="hand">Mano</button>
+    <button class="ghost" type="button" data-game-action="actions">Azioni</button>
+    <button class="ghost" type="button" data-game-action="log">Log</button>
+    <button class="ghost" type="button" data-game-action="setup">Setup</button>
+    <button class="ghost" type="button" data-game-action="stats">Stats</button>
+  </nav>
+  </div>
+
+  <script src="data/maps.js"></script>
+<script src="src/build_info.js"></script>
+<script src="src/constants.js"></script>
+<script src="src/enums.js"></script>
+<script src="src/hex.js"></script>
+<script src="src/events.js"></script>
+<script src="src/board.js"></script>
+<script src="src/ai.js"></script>
+<script src="data/factions.js"></script>
+<script src="data/units_base.js"></script>
+<script src="data/tactics_base.js"></script>
+  <script src="data/tactics_cards_c2.js"></script>
+<script src="data/cards_base.js"></script>
+<script src="src/state.js"></script>
+<script src="src/cards.js"></script>
+<script src="src/deck.js"></script>
+<script src="src/deck_builder.js"></script>
+<script src="src/rules.js"></script>
+<script src="src/economy.js"></script>
+<script src="src/statuses.js"></script>
+<script src="src/movement.js"></script>
+<script src="src/combat.js"></script>
+<script src="src/abilities.js"></script>
+<script src="src/tactics.js"></script>
+<script src="src/deployment.js"></script>
+<script src="src/stats.js"></script>
+<script src="src/render.js"></script>
+<script src="src/main.js"></script>
+<script src="src/game.js"></script>
+<script src="src/turns.js"></script>
+<script src="src/controller.js"></script>
+<script src="src/precheck.js"></script>
+<script src="src/panel_manager.js"></script>
+<script src="src/camera.js"></script>
+<script src="src/game_screen.js"></script>
+<script src="src/app.js"></script>
+<script src="src/ui.js"></script>
+<script src="src/splash.js"></script>
+<script src="src/mobile.js"></script>
+</body>
+</html>

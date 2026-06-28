@@ -1,0 +1,2643 @@
+:root {
+      --bg: #111318;
+      --panel: #1b1f2a;
+      --panel-2: #242a38;
+      --text: #e8edf5;
+      --muted: #aeb7c6;
+      --line: #394254;
+      --nexus: #2b6fb8;
+      --nexus-soft: #173a61;
+      --exo: #b43a32;
+      --exo-soft: #5b1e1a;
+      --liberti: #b88720;
+      --liberti-soft: #5d4211;
+      --agathoi: #4f9d58;
+      --agathoi-soft: #214e2a;
+      --fabeot: #8a4fb0;
+      --fabeot-soft: #3f2458;
+      --ps: #d6b35a;
+      --ok: #8bd17c;
+      --bad: #ef7777;
+      --warn: #e3bd67;
+      --hq: #f1d37b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #222838 0, var(--bg) 55%);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header.topTitleBar {
+      min-height: 58px;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 12, 18, 0.82);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: minmax(150px, 220px) 1fr minmax(150px, 220px);
+      align-items: center;
+      gap: 12px;
+    }
+    .topBarTitle { text-align: center; min-width: 0; }
+    .topBarTitle h1 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+    .topBarTitle h1 span {
+      font-size: 0.72em;
+      letter-spacing: 0.035em;
+      color: var(--muted);
+      font-weight: 650;
+      text-transform: none;
+      white-space: nowrap;
+    }
+    .topBarAction { display: flex; align-items: center; }
+    .topBarLeft { justify-content: flex-start; }
+    .topBarRight { justify-content: flex-end; }
+    .topBarBtn {
+      width: auto;
+      min-width: 136px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .app { display: grid; grid-template-columns: 330px minmax(620px, 1fr) 360px; gap: 14px; padding: 14px; align-items: start; }
+    .boardColumn { display: grid; gap: 14px; min-width: 0; }
+    .panel { background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012)), var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 35px rgba(0,0,0,.25); overflow: hidden; }
+    .panel h2, .panel h3 { margin: 0; padding: 13px 14px; border-bottom: 1px solid var(--line); font-size: 16px; background: rgba(0,0,0,.16); }
+    .panel .body { padding: 14px; }
+    .setupPanel > details { margin: 0; border: 0; background: transparent; }
+    .setupPanel > details > summary {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 16px;
+      background: rgba(0,0,0,.16);
+      cursor: pointer;
+      font-weight: 800;
+      list-style-position: inside;
+    }
+    .setupPanel > details > summary::after { content: "aperto"; float: right; color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .setupPanel > details:not([open]) > summary::after { content: "chiuso"; }
+    .setupPanel > details:not([open]) { border-radius: 16px; }
+    label { display: block; margin: 8px 0 5px; color: var(--muted); font-size: 13px; }
+    .checkline { display: flex; align-items: center; gap: 8px; margin: 4px 0 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.025); color: var(--muted); }
+    .checkline input { width: auto; margin: 0; }
+    select, button { width: 100%; border: 1px solid var(--line); border-radius: 11px; padding: 10px 11px; background: var(--panel-2); color: var(--text); font-size: 14px; }
+    button { cursor: pointer; font-weight: 650; transition: transform .08s ease, border-color .12s ease, background .12s ease; }
+    button:hover:not(:disabled) { transform: translateY(-1px); border-color: #5f6f91; background: #30384a; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    .primary { background: linear-gradient(180deg, #3a6fca, #254d91); border-color: #5f8ade; }
+    .danger { background: linear-gradient(180deg, #9d3935, #70231f); border-color: #c7574f; }
+    .ghost { background: transparent; }
+    .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+    .playerSetupRow {
+      grid-template-columns: minmax(0, 0.95fr) minmax(180px, 1.35fr) minmax(105px, 0.75fr);
+      align-items: end;
+      gap: 10px;
+    }
+    .setupField { min-width: 0; }
+    .setupField label { min-height: 32px; display: flex; align-items: flex-end; line-height: 1.15; }
+    .commanderField select { font-size: 13px; padding-left: 9px; padding-right: 9px; }
+    .modeField select { text-align-last: center; }
+    @media (max-width: 1180px) {
+      .playerSetupRow { grid-template-columns: 1fr; }
+      .setupField label { min-height: 0; }
+    }
+
+    .stack { display: grid; gap: 8px; }
+    .scorebox { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+    .score { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: rgba(255,255,255,.035); }
+    .score strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .score span { color: var(--muted); font-size: 13px; }
+    .faction-nexus-text { color: #84b9ff; }
+    .faction-exordium-text { color: #ff9b93; }
+    .faction-liberti-text { color: #e4be62; }
+    .faction-agathoi-text { color: #8fe09a; }
+    .faction-fabeot-text { color: #d5a3ff; }
+    #boardWrap { min-height: 830px; position: relative; display: grid; place-items: center; padding: 16px; }
+    #board { position: relative; width: 920px; height: 780px; max-width: 100%; border-radius: 18px; background: radial-gradient(circle at center, rgba(214,179,90,.08), rgba(255,255,255,.025) 40%, rgba(0,0,0,.14) 100%); border: 1px solid rgba(255,255,255,.06); overflow: hidden; }
+    .hex { position: absolute; width: 54px; height: 62px; transform: translate(-50%, -50%); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: #222937; border: none; outline: 1px solid rgba(255,255,255,.09); color: var(--text); display: grid; place-items: center; font-size: 10px; padding: 0; overflow: visible; }
+    .hex:hover { filter: brightness(1.2); transform: translate(-50%, -50%) !important; border-color: transparent; }
+    .hex:hover:not(:disabled) { transform: translate(-50%, -50%) !important; background: #2a3344; }
+    .hex.ps { background: linear-gradient(180deg, #534626, #292b34); box-shadow: inset 0 0 0 2px rgba(214,179,90,.45); }
+    .hex.ps::after { content: "✦"; position: absolute; top: 3px; right: 7px; color: var(--ps); font-size: 14px; text-shadow: 0 0 8px rgba(214,179,90,.5); }
+    .hex.psLocked { background: linear-gradient(180deg, #4d294e, #221d2b); box-shadow: inset 0 0 0 3px rgba(187,112,226,.85) !important; }
+    .hex.psLocked::after { content: "⊘"; color: #d7a0ff; font-size: 15px; }
+    .hex.hq { background: linear-gradient(180deg, #4a3d25, #1f2430); box-shadow: inset 0 0 0 3px rgba(241,211,123,.56); }
+    .hex.hq::before { content: "⌂"; position: absolute; top: 3px; left: 7px; color: var(--hq); font-size: 15px; text-shadow: 0 0 8px rgba(241,211,123,.55); }
+    .hex.hq.hq1 { outline: 1px solid rgba(132,185,255,.55); }
+    .hex.hq.hq2 { outline: 1px solid rgba(255,155,147,.55); }
+    .hex.moveTarget { background: #26443a; box-shadow: inset 0 0 0 3px rgba(139,209,124,.75); }
+    .hex.attackTarget { background: #543035; box-shadow: inset 0 0 0 3px rgba(239,119,119,.82); }
+    .hex.abilityTarget { background: #4c3f24; box-shadow: inset 0 0 0 3px rgba(227,189,103,.82); }
+    .hex.buildTarget, .hex.spawnTarget { background: #263f52; box-shadow: inset 0 0 0 3px rgba(132,185,255,.82); }
+
+    .hex.cellBlocked { background: linear-gradient(180deg, #35533a, #16251a); box-shadow: inset 0 0 0 3px rgba(143,224,154,.82) !important; }
+    .hex.cellBlocked::after { content: "▧"; position:absolute; top:3px; right:7px; color:#8fe09a; font-size:14px; text-shadow:0 0 8px rgba(143,224,154,.65); }
+    .hex.cellTrapNexus { box-shadow: inset 0 0 0 3px rgba(132,185,255,.66) !important; }
+    .hex.cellPassageNexus { background: linear-gradient(180deg, #233a56, #172234); box-shadow: inset 0 0 0 3px rgba(132,185,255,.78) !important; }
+    .hex.cellTrapAgathoi { box-shadow: inset 0 0 0 3px rgba(143,224,154,.66) !important; }
+    .hex.cellBramble { background: linear-gradient(180deg, #2f4634, #1b2520); box-shadow: inset 0 0 0 3px rgba(143,224,154,.75) !important; }
+    .hex.occupied { z-index: 2; }
+    .hex.selected { z-index: 4; filter: brightness(1.28); box-shadow: inset 0 0 0 3px white !important; }
+    .unitToken { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; position: relative; z-index: 2; border: 2px solid rgba(255,255,255,.72); box-shadow: 0 5px 10px rgba(0,0,0,.35), inset 0 -7px 13px rgba(0,0,0,.22), inset 0 4px 8px rgba(255,255,255,.11); font-weight: 800; font-size: 12px; color: white; }
+    .unitToken.faction-nexus { background: linear-gradient(180deg, var(--nexus), var(--nexus-soft)); }
+    .unitToken.faction-exordium { background: linear-gradient(180deg, var(--exo), var(--exo-soft)); }
+    .unitToken.faction-liberti { background: linear-gradient(180deg, var(--liberti), var(--liberti-soft)); }
+    .unitToken.faction-agathoi { background: linear-gradient(180deg, var(--agathoi), var(--agathoi-soft)); }
+    .unitToken.faction-fabeot { background: linear-gradient(180deg, var(--fabeot), var(--fabeot-soft)); }
+    .iconBadge.faction-nexus { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--nexus) 65%, transparent); }
+    .iconBadge.faction-exordium { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--exo) 65%, transparent); }
+    .iconBadge.faction-liberti { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--liberti) 65%, transparent); }
+    .iconBadge.faction-agathoi { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--agathoi) 65%, transparent); }
+    .iconBadge.faction-fabeot { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--fabeot) 65%, transparent); }
+    .iconBadge.weight-leggera { border-color: rgba(255,255,255,.88); }
+    .iconBadge.weight-pesante, .iconBadge.weight-elite { border-color: #f1c84b; border-width: 2px; }
+    .iconBadge.weight-pivot, .iconBadge.type-comandante { border-color: #e45454; border-width: 2px; }
+    .unitToken.type-fanteria { border-radius: 50%; }
+    .unitToken.type-veicolo { border-radius: 12px; }
+    .unitToken.type-struttura { border-radius: 9px; outline: 2px solid rgba(255,255,255,.20); }
+    .unitToken.type-comandante { border-radius: 50%; box-shadow: 0 0 0 3px rgba(214,179,90,.45), 0 5px 10px rgba(0,0,0,.35), inset 0 -7px 13px rgba(0,0,0,.22); }
+    .unitToken.type-qg { border-radius: 12px; border-color: rgba(241,211,123,.95); box-shadow: 0 0 0 3px rgba(241,211,123,.40), 0 8px 14px rgba(0,0,0,.45), inset 0 -7px 13px rgba(0,0,0,.22); }
+    .unitToken .symbol { font-size: 21px; line-height: 1; transform: translateY(-1px); text-shadow: 0 1px 3px rgba(0,0,0,.65); }
+    .unitToken .symbol { display:grid; place-items:center; width:24px; height:24px; }
+    .unitToken .symbol svg { width:24px; height:24px; overflow:visible; }
+    .unitToken.type-comandante .symbol svg { width:22px; height:22px; }
+    .unitToken.type-struttura .symbol svg { width:25px; height:25px; }
+    .unitToken.type-veicolo .symbol svg { width:24px; height:24px; }
+    .unitToken.weight-pivot { border-color: #e45454; border-width: 3px; box-shadow: 0 0 0 3px rgba(228,84,84,.28), 0 5px 10px rgba(0,0,0,.35), inset 0 -7px 13px rgba(0,0,0,.22), inset 0 4px 8px rgba(255,255,255,.11); }
+    .unitToken.weight-elite { border-color: #f1c84b; border-width:3px; }
+    .unitToken.weight-pesante { border-color: #f1c84b; border-width: 3px; }
+    .unitToken.weight-leggera { border-color: #ffffff; }
+    .unitToken.type-comandante { border-color: #e45454; border-width: 3px; box-shadow: 0 0 0 3px rgba(228,84,84,.24), 0 5px 10px rgba(0,0,0,.35), inset 0 -7px 13px rgba(0,0,0,.22), inset 0 4px 8px rgba(255,255,255,.11); }
+    .buyCard .head { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .buyCard .iconBadge { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); flex:0 0 auto; }
+    .buyCard .iconBadge svg { width:24px; height:24px; }
+    .buyCard .titleWrap { min-width:0; flex:1; }
+    .buyCard .titleRow { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+    .buyCard .titleRow strong { display:block; font-size:14px; }
+    .buyCard .titleRow span { color: var(--muted); font-size:12px; }
+    .buyCard .subRow { color: var(--muted); font-size:11px; margin-top:2px; }
+    .unitToken.acted { opacity: .55; filter: grayscale(.35); }
+    .unitToken .mini { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%); z-index: 8; background: rgba(5,8,14,.92); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: 1px 5px; font-size: 9px; white-space: nowrap; box-shadow: 0 2px 6px rgba(0,0,0,.45); pointer-events: none; }
+    .unitToken .statMini { bottom: -10px; display: inline-flex; align-items: center; gap: 2px; padding: 1px 3px 2px; font-size: 9px; letter-spacing: 0; font-weight: 800; line-height: 1; }
+    .unitToken .statMini .statNum { text-shadow: 0 1px 2px rgba(0,0,0,.95), 0 0 2px rgba(0,0,0,.95); }
+    .unitToken .statMini .statHp { color: #7fe18d; }
+    .unitToken .statMini .statDef { color: #ffffff; }
+    .unitToken .statMini .statAtt { color: #ff7272; }
+    .unitToken .statMini .statSep { color: rgba(255,255,255,.72); margin: 0 1px; text-shadow: 0 1px 2px rgba(0,0,0,.95); }
+    .unitToken.bleeding::after { content: "●"; position: absolute; top: -8px; right: -4px; color: #ef7777; text-shadow: 0 0 8px rgba(239,119,119,.75); font-size: 16px; }
+    .unitToken.inhibited::before { content: "⊘"; position: absolute; top: -10px; left: -6px; color: #e3bd67; text-shadow: 0 0 8px rgba(227,189,103,.85); font-size: 18px; font-weight: 900; }
+    .unitToken.thorns { box-shadow: 0 0 0 3px rgba(143,224,154,.42), 0 5px 10px rgba(0,0,0,.35), inset 0 -7px 13px rgba(0,0,0,.22), inset 0 4px 8px rgba(255,255,255,.11); }
+    .coord { position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.28); font-size: 8px; pointer-events: none; }
+    .unitCard, .buyCard { border: 1px solid var(--line); background: rgba(255,255,255,.035); border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+    .unitCard h4, .buyCard h4 { margin: 0 0 6px; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; }
+    .unitCard .meta, .buyCard .meta { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+    .bars { display: grid; gap: 4px; }
+    .bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; border: 1px solid rgba(255,255,255,.08); }
+    .bar > i { display: block; height: 100%; background: #7fc97f; }
+    .bar.def > i { background: #8db3e2; }
+    .stats { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .pill { border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: 3px 7px; font-size: 11px; color: var(--muted); background: rgba(0,0,0,.18); }
+    .pill.bad { color: #ffb2b2; border-color: rgba(239,119,119,.35); }
+    .pill.warn { color: #ffe1a1; border-color: rgba(227,189,103,.38); }
+    .pill.good { color: #bff3b8; border-color: rgba(139,209,124,.42); }
+    .pill.enePill, .enePill { color: #ffe1a1; border-color: rgba(227,189,103,.45); font-weight: 800; }
+    .market { max-height: 330px; overflow: auto; padding-right: 6px; }
+    .marketDock details { margin: 0; border: 0; border-radius: 16px; background: transparent; }
+    .marketDock summary { padding: 13px 14px; border-bottom: 1px solid var(--line); font-size: 16px; background: rgba(0,0,0,.16); cursor: pointer; font-weight: 800; }
+    .marketDock summary::after { content: "chiuso"; float: right; color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .marketDock details[open] summary::after { content: "aperto"; }
+    .marketDock .body { padding: 12px; resize: vertical; overflow: auto; min-height: 120px; max-height: 520px; }
+    .marketHelp { margin-bottom: 8px; }
+    .marketDock .market { max-height: none; overflow: visible; padding-right: 6px; display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 8px; }
+    .marketDock .buyCard { margin-bottom: 0; }
+    .marketDock .buyCard button { margin-top: 7px; }
+    .buyCard button { margin-top: 8px; padding: 8px; font-size: 12px; }
+    .tacticCard { border: 1px solid rgba(227,189,103,.22); background: rgba(227,189,103,.045); border-radius: 12px; padding: 9px; margin-top: 8px; }
+    .tacticCard h4 { margin: 0 0 5px; font-size: 13px; display:flex; justify-content:space-between; gap:8px; }
+    .tacticCard .meta { color: var(--muted); font-size: 11px; line-height:1.35; }
+    .tacticCard button { margin-top: 7px; padding: 8px; font-size: 12px; }
+    .tacticCard.unavailable { opacity:.55; }
+    .buyCard.unavailable { opacity: .58; }
+    #log { height: 310px; overflow: auto; padding-right: 6px; font-size: 13px; line-height: 1.38; }
+    .logItem { border-bottom: 1px solid rgba(255,255,255,.06); padding: 6px 0; color: #d7deec; }
+    .logItem small { color: var(--muted); }
+    .help { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    details { margin-top: 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(0,0,0,.15); overflow: hidden; }
+    summary { padding: 10px; cursor: pointer; color: var(--text); font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border-top: 1px solid rgba(255,255,255,.08); padding: 6px; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-weight: 700; }
+    .banner { display: none; margin: 0 0 10px; padding: 10px 12px; border: 1px solid var(--warn); color: #ffe1a1; background: rgba(227,189,103,.11); border-radius: 12px; }
+    .banner.show { display: block; }
+
+    .statsToolbar { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+    .statsToolbar button { padding:7px 9px; font-size:11px; }
+    .statGrid { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+    .statTile { border:1px solid rgba(255,255,255,.09); border-radius:10px; background: rgba(255,255,255,.035); padding:8px; }
+    .statTile strong { display:block; color:var(--text); font-size:14px; }
+    .statTile span { color:var(--muted); font-size:11px; }
+    .miniTable { max-height:250px; overflow:auto; border:1px solid rgba(255,255,255,.08); border-radius:10px; margin-top:8px; }
+    .miniTable table { font-size:11px; }
+    .miniTable th, .miniTable td { padding:5px; }
+    .winNexus { color: var(--nexus); font-weight:700; }
+    .winExordium { color: var(--exo); font-weight:700; }
+    .winLiberti { color: var(--liberti); font-weight:700; }
+    .winAgathoi { color: var(--agathoi); font-weight:700; }
+    .winFabeot { color: var(--fabeot); font-weight:700; }
+
+    @media (max-width: 1180px) { .app { grid-template-columns: 1fr; } #boardWrap { min-height: 830px; } #board { width: 920px; height: 780px; } .marketDock .market { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); } .handStatusGrid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) {
+  header.topTitleBar { grid-template-columns: 1fr; gap: 8px; }
+  .topBarLeft, .topBarRight { justify-content: stretch; }
+  .topBarBtn { width: 100%; }
+  .topBarTitle { order: -1; }
+  .topBarTitle h1 { font-size: 16px; }
+}
+
+
+/* C1b – Card/deck/hand debug UI */
+.cardDebugDock .body { padding: 0; }
+.cardZonePanel { max-height: 540px; min-height: 310px; overflow: auto; resize: vertical; padding: 0 10px 10px 0; }
+.handStatusBanner { position: sticky; top: 0; z-index: 8; padding: 10px 12px; margin: 0 0 10px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, rgba(27,31,42,.98), rgba(20,23,32,.96)); box-shadow: 0 8px 18px rgba(0,0,0,.28); }
+.handBannerTitle { display:flex; justify-content:space-between; gap:10px; align-items:baseline; margin-bottom:8px; }
+.handBannerTitle strong { font-size:14px; letter-spacing:.02em; }
+.handBannerTitle span { color: var(--muted); font-size: 11px; text-align:right; }
+.deckRecoveryBtn { margin: 0 0 8px; padding: 7px 10px; font-size: 11px; border-color: rgba(227,189,103,.45); background: rgba(227,189,103,.12); color: #ffe1a1; }
+.deckRecoveryBtn:disabled { opacity: .45; cursor: not-allowed; }
+.handStatusGrid { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+.handBannerPlayer { border: 1px solid rgba(255,255,255,.10); border-radius: 11px; padding: 8px; background: rgba(0,0,0,.18); }
+.handBannerPlayer.current { border-color: rgba(227,189,103,.45); box-shadow: inset 0 0 0 1px rgba(227,189,103,.16); }
+.handBannerPlayer strong { display:block; font-size:12px; margin-bottom:5px; }
+.handBannerPills { display:flex; flex-wrap:wrap; gap:4px; }
+.handScrollContent { padding: 0 12px 12px; }
+.cardZoneGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.cardZonePlayer { border: 1px solid rgba(255,255,255,.10); border-radius: 12px; background: rgba(0,0,0,.16); padding: 10px; }
+.cardZonePlayer h4 { margin: 0 0 8px; font-size: 13px; display: flex; justify-content: space-between; gap: 8px; }
+.miniSectionTitle { color: var(--muted); font-size: 10px; margin: 7px 0 5px; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+.debugStarterGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 6px 0 10px; }
+.debugStarterSlot { min-width: 0; }
+.miniLabel { color: var(--muted); font-size: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .04em; }
+.debugHandList { display: grid; gap: 6px; }
+.debugCard { border: 1px solid rgba(227,189,103,.18); background: rgba(227,189,103,.045); border-radius: 10px; padding: 7px; min-width: 0; }
+.debugCard.empty { opacity: .55; color: var(--muted); font-size: 11px; }
+.debugCard strong { display: block; font-size: 12px; line-height: 1.2; margin-bottom: 2px; overflow-wrap: anywhere; }
+.debugCard span { color: var(--muted); font-size: 11px; }
+.debugCard .stats { margin-top: 5px; gap: 4px; }
+.debugCard .pill { font-size: 10px; padding: 2px 6px; }
+.cardDebugIntro h4 span { color: var(--muted); font-size: 11px; font-weight: 500; }
+
+
+/* C1c – Starter card operative buttons */
+.debugStarterSlot.playable {
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(227,189,103,.25);
+  background: rgba(227,189,103,.035);
+}
+.starterAction { margin-top: 6px; }
+.starterAction button {
+  width: 100%;
+  margin-top: 2px;
+  padding: 7px;
+  font-size: 11px;
+}
+.starterAction .meta {
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+
+/* C1e – Hand unit cards playable */
+.debugHandSlot.playable {
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(127,201,127,.25);
+  background: rgba(127,201,127,.035);
+}
+.debugHandSlot.pending {
+  outline: 2px solid rgba(227,189,103,.45);
+  outline-offset: 2px;
+}
+.handAction { margin-top: 6px; }
+.handAction button {
+  width: 100%;
+  margin-top: 2px;
+  padding: 7px;
+  font-size: 11px;
+}
+.handAction .meta {
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+
+/* C1h – Deck/Roster sanity pass */
+.debugCard.overflow {
+  box-shadow: inset 0 0 0 1px rgba(227,120,120,.28);
+}
+
+
+/* C2b – Tactic hand UI / debug refinement */
+.debugCard.tacticCardDebug {
+  border-style: dashed;
+  position: relative;
+}
+
+.debugCard.tacticCardDebug > strong::before {
+  content: "TATTICA · ";
+  font-size: 0.78em;
+  opacity: 0.75;
+}
+
+.tacticDebugDetails {
+  margin-top: 8px;
+  display: grid;
+  gap: 7px;
+}
+
+.tacticTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tacticPill {
+  font-weight: 700;
+}
+
+.tacticGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.tacticGrid div {
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 5px 6px;
+  background: rgba(0,0,0,0.16);
+}
+
+.tacticGrid span,
+.tacticCondition span {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.72;
+  margin-bottom: 2px;
+}
+
+.tacticGrid strong {
+  font-size: 0.78rem;
+  line-height: 1.15;
+}
+
+.tacticCondition,
+.tacticEffect,
+.tacticStatus,
+.tacticNotes {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  opacity: 0.92;
+}
+
+.tacticEffect {
+  border-left: 3px solid rgba(255,255,255,0.22);
+  padding-left: 7px;
+}
+
+.tacticStatus {
+  opacity: 0.68;
+  font-style: italic;
+}
+
+.tacticNotes {
+  opacity: 0.72;
+}
+
+
+/* C2c-1 – playable single damage tactic markers */
+.debugHandSlot.playable .debugCard.tacticCardDebug {
+  border-style: solid;
+}
+
+.debugHandSlot.playable .debugCard.tacticCardDebug > strong::before {
+  content: "TATTICA GIOCABILE · ";
+}
+
+
+/* C2d-1 – Unit Market / Hand UI Reorganization */
+.handPrimaryDock h2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.marketDebugDock { opacity: .96; }
+.debugCard.tacticCardDebug { padding: 6px; }
+.debugCard.tacticCardDebug strong { font-size: 11.5px; margin-bottom: 1px; }
+.debugCard.tacticCardDebug > span { font-size: 10px; }
+.debugCard.tacticCardDebug > strong::before { content: "TAC · "; font-size: 0.75em; opacity: 0.75; }
+.debugHandSlot.playable .debugCard.tacticCardDebug > strong::before { content: "TAC OK · "; }
+.debugCard.tacticCardDebug .stats { margin-top: 4px; }
+.debugCard.tacticCardDebug .pill { font-size: 9.5px; padding: 1px 5px; }
+.tacticCompactDetails { margin-top: 5px; gap: 4px; }
+.tacticCompactDetails .tacticTags { gap: 3px; }
+.tacticCompactDetails .tacticEffect { font-size: 0.74rem; line-height: 1.2; max-height: 4.8em; overflow: hidden; border-left: 3px solid rgba(227,189,103,.34); padding-left: 6px; }
+.tacticCompactDetails .tacticEffect strong { display:inline; font-size: inherit; margin: 0; color: var(--text); }
+.tacticTinyMeta { display:flex; flex-wrap:wrap; gap:3px; opacity:.72; }
+.tacticTinyMeta span { border:1px solid rgba(255,255,255,.08); border-radius:999px; padding:1px 5px; font-size:9px; background:rgba(0,0,0,.14); }
+.debugHandSlot .handAction { margin-top: 4px; }
+.debugHandSlot .handAction button { padding: 6px; font-size: 10.5px; }
+
+/* APK-M1 – Mobile Fit / Landscape Pass
+   Obiettivo: rendere la build convertita in APK usabile su smartphone landscape
+   senza introdurre una seconda versione del gioco. */
+.mobileMapHud { display:none; }
+#board { transform: translate(var(--board-camera-x, 0px), var(--board-camera-y, 0px)) scale(var(--board-fit-scale, 1)); transform-origin: center center; transition: transform .12s ease; will-change: transform; }
+
+@media (pointer: coarse), (max-width: 980px), (max-height: 520px) {
+  html, body { min-width: 0; overflow-x: hidden; overscroll-behavior: none; }
+  body.mobile-apk-m1 {
+    min-height: 100svh;
+    background: radial-gradient(circle at top, #222838 0, #111318 62%);
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  body.mobile-apk-m1 header.topTitleBar {
+    min-height: 44px;
+    padding: max(5px, env(safe-area-inset-top)) 7px 5px;
+    grid-template-columns: minmax(92px, .55fr) minmax(0, 1fr) minmax(92px, .55fr);
+    gap: 6px;
+    position: sticky;
+  }
+  body.mobile-apk-m1 .topBarTitle h1 { font-size: clamp(11px, 2.7vw, 15px); letter-spacing: .045em; }
+  body.mobile-apk-m1 .topBarTitle h1 span { display:block; font-size: .68em; margin-top: 1px; }
+  body.mobile-apk-m1 .topBarBtn { min-width: 0; width: 100%; padding: 8px 7px; border-radius: 9px; font-size: 12px; min-height: 38px; }
+  body.mobile-apk-m1 .app {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px;
+    align-items: stretch;
+  }
+  body.mobile-apk-m1 .boardColumn { order: -1; display: grid; gap: 8px; }
+  body.mobile-apk-m1 #boardWrap {
+    min-height: min(74svh, calc(100svh - 58px));
+    height: min(74svh, calc(100svh - 58px));
+    padding: 4px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 13px;
+  }
+  body.mobile-apk-m1 #board {
+    width: 920px;
+    height: 780px;
+    max-width: none;
+    flex: 0 0 auto;
+    touch-action: manipulation;
+  }
+  body.mobile-apk-m1 .mobileMapHud {
+    display:flex;
+    position:absolute;
+    left: 8px;
+    top: 8px;
+    right: 8px;
+    z-index: 12;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    pointer-events:none;
+    color: rgba(232,237,245,.78);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing:.05em;
+  }
+  body.mobile-apk-m1 .mobileMapHud button {
+    pointer-events:auto;
+    width:auto;
+    min-width:72px;
+    min-height:34px;
+    padding:6px 10px;
+    border-radius:999px;
+    background: rgba(10,12,18,.58);
+    backdrop-filter: blur(4px);
+    font-size:11px;
+  }
+  body.mobile-apk-m1 .panel { border-radius: 12px; }
+  body.mobile-apk-m1 .panel h2, body.mobile-apk-m1 .panel h3,
+  body.mobile-apk-m1 .setupPanel > details > summary,
+  body.mobile-apk-m1 .marketDock summary,
+  body.mobile-apk-m1 summary { padding: 9px 10px; font-size: 13px; }
+  body.mobile-apk-m1 .panel .body { padding: 9px; }
+  body.mobile-apk-m1 .setupPanel > details:not([open]) { min-height: 40px; }
+  body.mobile-apk-m1 .help { font-size: 11px; line-height: 1.32; }
+  body.mobile-apk-m1 label { font-size: 11px; margin: 5px 0 3px; }
+  body.mobile-apk-m1 select, body.mobile-apk-m1 button { min-height: 40px; padding: 8px 9px; font-size: 12px; border-radius: 10px; }
+  body.mobile-apk-m1 .playerSetupRow { grid-template-columns: 1fr 1fr 0.72fr; gap: 6px; }
+  body.mobile-apk-m1 .setupField label { min-height: 0; font-size: 10px; }
+  body.mobile-apk-m1 .scorebox { grid-template-columns: 1fr 1fr; gap: 6px; margin: 6px 0; }
+  body.mobile-apk-m1 .score { padding: 7px; }
+  body.mobile-apk-m1 .score strong { font-size: 12px; }
+  body.mobile-apk-m1 .score span { font-size: 10px; }
+  body.mobile-apk-m1 .unitCard, body.mobile-apk-m1 .buyCard, body.mobile-apk-m1 .tacticCard { padding: 7px; margin-bottom: 6px; }
+  body.mobile-apk-m1 .unitCard h4, body.mobile-apk-m1 .buyCard h4, body.mobile-apk-m1 .tacticCard h4 { font-size: 12px; }
+  body.mobile-apk-m1 .unitCard .meta, body.mobile-apk-m1 .buyCard .meta, body.mobile-apk-m1 .tacticCard .meta { font-size: 10.5px; }
+  body.mobile-apk-m1 .stats { gap: 4px; margin-top: 5px; }
+  body.mobile-apk-m1 .pill { font-size: 9px; padding: 2px 5px; }
+  body.mobile-apk-m1 .cardZonePanel { max-height: 44svh; min-height: 180px; resize: none; padding-right: 4px; }
+  body.mobile-apk-m1 .handStatusBanner { padding: 7px 8px; }
+  body.mobile-apk-m1 .cardZoneGrid { grid-template-columns: 1fr; gap: 7px; }
+  body.mobile-apk-m1 .debugStarterGrid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 4px; }
+  body.mobile-apk-m1 .debugCard strong { font-size: 10.5px; }
+  body.mobile-apk-m1 .debugCard span { font-size: 9.5px; }
+  body.mobile-apk-m1 .marketDock .body { max-height: 44svh; min-height: 110px; resize: none; }
+  body.mobile-apk-m1 .marketDock .market { grid-template-columns: 1fr; gap: 6px; }
+  body.mobile-apk-m1 #log { height: 24svh; min-height: 118px; font-size: 11px; }
+  body.mobile-apk-m1 .logItem { padding: 4px 0; }
+  body.mobile-apk-m1 .coord { display:none; }
+  body.mobile-apk-m1 .hex { width: 56px; height: 64px; }
+  body.mobile-apk-m1 .unitToken { width: 44px; height: 44px; }
+  body.mobile-apk-m1 .unitToken .statMini { font-size: 9.5px; bottom: -11px; }
+}
+
+@media (pointer: coarse) and (orientation: landscape), (max-height: 520px) and (orientation: landscape) {
+  body.mobile-apk-m1.mobile-landscape .app {
+    grid-template-columns: minmax(0, 1fr) minmax(270px, 36vw);
+    grid-template-rows: auto minmax(0, 1fr) minmax(130px, 0.48fr);
+    height: calc(100svh - 48px);
+    overflow: hidden;
+  }
+  body.mobile-apk-m1.mobile-landscape .boardColumn {
+    display: contents;
+  }
+  body.mobile-apk-m1.mobile-landscape #boardWrap {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    height: 100%;
+    min-height: 0;
+  }
+  body.mobile-apk-m1.mobile-landscape .setupPanel {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 0;
+    max-height: 39svh;
+    overflow: auto;
+  }
+  body.mobile-apk-m1.mobile-landscape .setupPanel > details:not([open]) > summary {
+    border-bottom: 0;
+  }
+  body.mobile-apk-m1.mobile-landscape .handPrimaryDock {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+    overflow: hidden;
+  }
+  body.mobile-apk-m1.mobile-landscape .handPrimaryDock .body { height: calc(100% - 38px); overflow: hidden; }
+  body.mobile-apk-m1.mobile-landscape .cardZonePanel { max-height: 100%; height: 100%; overflow: auto; }
+  body.mobile-apk-m1.mobile-landscape .marketDock { display:none; }
+  body.mobile-apk-m1.mobile-landscape .app > section.panel:last-child {
+    grid-column: 2;
+    grid-row: 3;
+    min-height: 0;
+    max-height: 46svh;
+    overflow: auto;
+  }
+  body.mobile-apk-m1.mobile-landscape .app > section.panel:last-child .body { padding: 7px; }
+  body.mobile-apk-m1.mobile-landscape #selectedPanel { margin-bottom: 5px; }
+  body.mobile-apk-m1.mobile-landscape #actionPanel { gap: 5px; }
+  body.mobile-apk-m1.mobile-landscape #actionPanel button { min-height: 36px; }
+  body.mobile-apk-m1.mobile-landscape #log { height: 92px; min-height: 92px; }
+}
+
+@media (pointer: coarse) and (orientation: portrait), (max-width: 720px) and (orientation: portrait) {
+  body.mobile-apk-m1.mobile-portrait::before {
+    content: "Ruota il dispositivo in orizzontale per la modalità APK-M1.";
+    display:block;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: 7px 10px;
+    text-align:center;
+    color:#ffe1a1;
+    background: rgba(90,55,10,.88);
+    border-bottom:1px solid rgba(227,189,103,.45);
+    font-size:12px;
+  }
+  body.mobile-apk-m1.mobile-portrait #boardWrap { height: 58svh; min-height: 360px; }
+}
+
+
+/* APK-M2 – Mobile Map Camera / Drawer UI
+   M2 mantiene il renderer esagonale corrente e aggiunge una camera mobile
+   pan/zoom più drawer sovrapposti. Nessuna modifica a logica, AI o regole. */
+.mobileMapButtons { display:flex; align-items:center; justify-content:flex-end; gap:5px; flex-wrap:wrap; }
+
+@media (pointer: coarse), (max-width: 980px), (max-height: 520px) {
+  body.mobile-apk-m2 #boardWrap {
+    touch-action: none;
+    isolation: isolate;
+    background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(0,0,0,.10)), var(--panel);
+  }
+  body.mobile-apk-m2 #board {
+    cursor: grab;
+    transition: transform .07s linear;
+  }
+  body.mobile-apk-m2 #board:active { cursor: grabbing; }
+  body.mobile-apk-m2 .mobileMapHud {
+    align-items:flex-start;
+    pointer-events:none;
+  }
+  body.mobile-apk-m2 .mobileMapHud > span {
+    padding: 8px 10px;
+    min-height: 34px;
+    display:flex;
+    align-items:center;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    background: rgba(10,12,18,.58);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+    pointer-events:none;
+  }
+  body.mobile-apk-m2 .mobileMapButtons { pointer-events:auto; }
+  body.mobile-apk-m2 .mobileMapButtons button {
+    min-width: 42px;
+    width: auto;
+    min-height: 34px;
+    padding: 6px 9px;
+    border-radius: 999px;
+    background: rgba(10,12,18,.62);
+    backdrop-filter: blur(4px);
+    font-size: 11px;
+  }
+  body.mobile-apk-m2 #zoomOutBoardBtn,
+  body.mobile-apk-m2 #zoomInBoardBtn {
+    min-width: 34px;
+    font-size: 17px;
+    line-height: 1;
+    font-weight: 900;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape), (max-height: 520px) and (orientation: landscape) {
+  body.mobile-apk-m2.mobile-landscape {
+    overflow: hidden;
+  }
+  body.mobile-apk-m2.mobile-landscape header.topTitleBar {
+    height: 46px;
+    min-height: 46px;
+    position: relative;
+  }
+  body.mobile-apk-m2.mobile-landscape .app {
+    display:block;
+    position:relative;
+    height: calc(100svh - 46px);
+    min-height: 0;
+    overflow:hidden;
+    padding:0;
+  }
+  body.mobile-apk-m2.mobile-landscape .boardColumn {
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  body.mobile-apk-m2.mobile-landscape #boardWrap {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    min-height:0;
+    grid-column:auto;
+    grid-row:auto;
+    border-radius:0;
+    border-left:0;
+    border-right:0;
+    border-bottom:0;
+    padding:0;
+  }
+  body.mobile-apk-m2.mobile-landscape .marketDock { display:none; }
+
+  body.mobile-apk-m2.mobile-landscape .setupPanel,
+  body.mobile-apk-m2.mobile-landscape .handPrimaryDock,
+  body.mobile-apk-m2.mobile-landscape .app > section.panel:last-child {
+    position: fixed;
+    right: max(8px, env(safe-area-inset-right));
+    top: calc(46px + max(8px, env(safe-area-inset-top)));
+    bottom: max(8px, env(safe-area-inset-bottom));
+    width: min(370px, 44vw);
+    min-width: min(330px, 44vw);
+    max-width: calc(100vw - 24px);
+    z-index: 26;
+    transform: translateX(calc(100% + 18px));
+    transition: transform .16s ease, opacity .16s ease;
+    opacity: .96;
+    overflow:hidden;
+    display:block;
+    box-shadow: 0 18px 45px rgba(0,0,0,.48);
+  }
+  body.mobile-apk-m2.mobile-landscape.mobile-drawer-setup .setupPanel,
+  body.mobile-apk-m2.mobile-landscape.mobile-drawer-hand .handPrimaryDock,
+  body.mobile-apk-m2.mobile-landscape.mobile-drawer-command .app > section.panel:last-child {
+    transform: translateX(0);
+  }
+  body.mobile-apk-m2.mobile-landscape .setupPanel > details,
+  body.mobile-apk-m2.mobile-landscape .setupPanel > details > .body,
+  body.mobile-apk-m2.mobile-landscape .handPrimaryDock > .body,
+  body.mobile-apk-m2.mobile-landscape .app > section.panel:last-child > .body {
+    height:100%;
+    min-height:0;
+  }
+  body.mobile-apk-m2.mobile-landscape .setupPanel > details[open] > .body,
+  body.mobile-apk-m2.mobile-landscape .handPrimaryDock > .body,
+  body.mobile-apk-m2.mobile-landscape .app > section.panel:last-child > .body {
+    overflow:auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.mobile-apk-m2.mobile-landscape .setupPanel > details:not([open]) {
+    height:auto;
+  }
+  body.mobile-apk-m2.mobile-landscape .cardZonePanel {
+    height: calc(100% - 4px);
+    max-height:none;
+    min-height:0;
+    overflow:auto;
+  }
+  body.mobile-apk-m2.mobile-landscape .app > section.panel:last-child #log {
+    height: 34svh;
+    min-height: 118px;
+  }
+  body.mobile-apk-m2.mobile-landscape .app > section.panel:last-child #actionPanel button {
+    min-height: 39px;
+  }
+}
+
+@media (pointer: coarse) and (orientation: portrait), (max-width: 720px) and (orientation: portrait) {
+  body.mobile-apk-m2.mobile-portrait::before {
+    content: "Ruota il dispositivo in orizzontale per APK-M2: mappa fullscreen, pan/zoom e drawer.";
+  }
+}
+
+
+/* APK-M2b – Non-fullscreen mobile layout + splash shell
+   Correzione dopo test M2: la mappa fullscreen rendeva difficili mano/scroll e gestione da smartphone.
+   M2b conserva fit/camera leggera, ma torna a un layout visibile e scrollabile. */
+.appSplash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  background:
+    radial-gradient(circle at 50% 30%, rgba(170,40,30,.22), transparent 34%),
+    radial-gradient(circle at 20% 80%, rgba(40,88,160,.18), transparent 35%),
+    #05060a;
+  color: var(--text);
+  transition: opacity .32s ease, visibility .32s ease;
+}
+.appSplash.isHidden { opacity:0; visibility:hidden; pointer-events:none; }
+.splashCard {
+  width: min(620px, 92vw);
+  min-height: min(340px, 72svh);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 24px;
+  padding: 30px;
+  background: linear-gradient(180deg, rgba(20,24,34,.92), rgba(8,10,16,.92));
+  box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 0 50px rgba(255,255,255,.03);
+}
+.splashKicker { font-size: clamp(12px, 2.4vw, 16px); letter-spacing:.22em; text-transform:uppercase; color:var(--muted); }
+.splashLogoText {
+  font-size: clamp(38px, 9vw, 86px);
+  line-height:.9;
+  letter-spacing:.08em;
+  font-weight:900;
+  text-shadow: 0 0 24px rgba(188,47,37,.35);
+}
+.splashSubtitle { color:var(--muted); font-size: clamp(14px, 2.8vw, 20px); }
+.splashHint { color:var(--accent); font-size: 13px; margin-top: 6px; }
+.splashSkipBtn { max-width: 180px; margin-top: 6px; }
+
+@media (pointer: coarse), (max-width: 980px), (max-height: 520px) {
+  body.mobile-apk-m2b {
+    overflow: auto !important;
+    overscroll-behavior: contain;
+    touch-action: manipulation;
+  }
+  body.mobile-apk-m2b .mobileMapHud > span { display:none; }
+  body.mobile-apk-m2b .mobileMapButtons button { min-height:36px; }
+  body.mobile-apk-m2b #openHandDrawerBtn,
+  body.mobile-apk-m2b #openCommandDrawerBtn,
+  body.mobile-apk-m2b #openSetupDrawerBtn { display:inline-flex; }
+}
+
+@media (pointer: coarse) and (orientation: landscape), (max-height: 520px) and (orientation: landscape) {
+  body.mobile-apk-m2b.mobile-landscape header.topTitleBar {
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .app {
+    display:grid !important;
+    grid-template-columns: minmax(360px, 58vw) minmax(250px, 1fr) !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    gap: 7px !important;
+    height: auto !important;
+    min-height: calc(100svh - 46px) !important;
+    overflow: auto !important;
+    padding: 7px max(7px, env(safe-area-inset-right)) max(7px, env(safe-area-inset-bottom)) max(7px, env(safe-area-inset-left)) !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .setupPanel {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    position:relative !important;
+    inset:auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height:auto !important;
+    min-height:0 !important;
+    bottom:auto !important;
+    top:auto !important;
+    right:auto !important;
+    transform:none !important;
+    opacity:1 !important;
+    overflow:visible !important;
+    box-shadow:none !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .setupPanel > details > summary { min-height: 34px; padding: 7px 10px; }
+  body.mobile-apk-m2b.mobile-landscape .setupPanel > details[open] > .body {
+    max-height: 45svh;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  body.mobile-apk-m2b.mobile-landscape .boardColumn {
+    display: contents !important;
+    width:auto !important;
+    height:auto !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape #boardWrap {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    height: calc(100svh - 100px) !important;
+    min-height: 250px !important;
+    max-height: calc(100svh - 86px) !important;
+    border-radius: 13px !important;
+    border: 1px solid var(--line) !important;
+    padding: 3px !important;
+    overflow: hidden !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .handPrimaryDock {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    align-self: start !important;
+    position:relative !important;
+    inset:auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height: calc((100svh - 104px) * .52) !important;
+    min-height: 130px !important;
+    bottom:auto !important;
+    top:auto !important;
+    right:auto !important;
+    transform:none !important;
+    opacity:1 !important;
+    display:block !important;
+    overflow:hidden !important;
+    box-shadow:none !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .handPrimaryDock .body,
+  body.mobile-apk-m2b.mobile-landscape .handPrimaryDock > .body {
+    height: calc(100% - 38px) !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .cardZonePanel {
+    height:100% !important;
+    max-height:none !important;
+    min-height:0 !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 5px;
+  }
+  body.mobile-apk-m2b.mobile-landscape .marketDock { display:none !important; }
+  body.mobile-apk-m2b.mobile-landscape .app > section.panel:last-child {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    align-self:end !important;
+    position:relative !important;
+    inset:auto !important;
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+    height: calc((100svh - 104px) * .46) !important;
+    min-height: 120px !important;
+    bottom:auto !important;
+    top:auto !important;
+    right:auto !important;
+    transform:none !important;
+    opacity:1 !important;
+    display:block !important;
+    overflow:hidden !important;
+    box-shadow:none !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .app > section.panel:last-child > .body {
+    height: calc(100% - 38px) !important;
+    min-height:0 !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  body.mobile-apk-m2b.mobile-landscape .app > section.panel:last-child #log {
+    height: 72px !important;
+    min-height: 72px !important;
+  }
+  body.mobile-apk-m2b.mobile-landscape .mobileMapHud {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    padding: 0;
+  }
+  body.mobile-apk-m2b.mobile-landscape .mobileMapButtons {
+    justify-content: space-between;
+    width:100%;
+  }
+}
+
+@media (pointer: coarse) and (orientation: portrait), (max-width: 720px) and (orientation: portrait) {
+  body.mobile-apk-m2b.mobile-portrait::before {
+    content: "Ruota il dispositivo in orizzontale: APK-M2b usa mappa adattata + mano e comandi visibili." !important;
+  }
+}
+
+
+/* APK-M3b – Intro Flow Polish / Splash / Music assets */
+.appSplash[data-splash-phase] {
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  overflow:hidden;
+  background:#000;
+  padding:0;
+  touch-action:manipulation;
+}
+.splashSlides {
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:#000;
+}
+.splashSlide {
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transform:scale(1.025);
+  pointer-events:none;
+  will-change:opacity, transform;
+}
+.splashSlideDev {
+  transition: opacity .82s ease, transform 3.4s ease;
+}
+.splashSlideTitle {
+  transition: opacity 1.85s ease, transform 13s cubic-bezier(.18,.82,.18,1);
+  transform:scale(1.055);
+}
+.splashSlide.isActive {
+  opacity:1;
+  transform:scale(1);
+}
+.splashSlide img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.splashShade {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  opacity:.88;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.16), transparent 36%, rgba(0,0,0,.54)),
+    radial-gradient(circle at 50% 48%, transparent 42%, rgba(0,0,0,.30));
+}
+.appSplash[data-splash-phase="dev"] .splashShade { opacity:.34; }
+.appSplash[data-splash-phase="title"] .splashShade { opacity:.56; }
+.appSplash[data-splash-phase="boot"] .splashShade,
+.appSplash[data-splash-phase="blackout"] .splashShade { opacity:1; background:#000; }
+.splashUi {
+  position:absolute;
+  z-index:2;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  color:#f4f0ea;
+  text-align:center;
+  pointer-events:none;
+  text-shadow:0 2px 16px rgba(0,0,0,.9);
+}
+.splashEnterBtn {
+  position:absolute;
+  left:50%;
+  bottom:clamp(58px, 9.2vh, 96px);
+  transform:translateX(-50%) translateY(10px);
+  min-width:min(420px, 78vw);
+  min-height:48px;
+  padding:12px 30px;
+  border-radius:999px;
+  border:1px solid rgba(186, 36, 36, .72);
+  background:
+    linear-gradient(180deg, rgba(58,18,18,.88), rgba(18,10,9,.90)),
+    radial-gradient(circle at 50% 0%, rgba(225,190,130,.24), transparent 48%);
+  color:#f2e9dc;
+  font-weight:900;
+  letter-spacing:.115em;
+  text-transform:uppercase;
+  box-shadow:
+    0 0 0 1px rgba(255,225,180,.10) inset,
+    0 14px 42px rgba(0,0,0,.66),
+    0 0 28px rgba(130,0,0,.22);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .75s ease 1.1s, transform .75s ease 1.1s, border-color .22s ease, filter .22s ease;
+}
+.appSplash[data-splash-phase="title"] .splashEnterBtn {
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.splashEnterBtn:hover,
+.splashEnterBtn:focus-visible {
+  border-color:rgba(230,70,55,.96);
+  filter:brightness(1.08);
+}
+.appSplash.isHidden {
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .68s ease;
+}
+
+@media (pointer: coarse) and (orientation: landscape), (max-height: 560px) and (orientation: landscape) {
+  .splashEnterBtn {
+    min-height:38px;
+    min-width:min(360px, 70vw);
+    padding:8px 20px;
+    bottom:max(34px, env(safe-area-inset-bottom));
+    font-size:12px;
+  }
+}
+
+@media (orientation: portrait) {
+  .splashSlide img { object-fit:cover; }
+  .splashEnterBtn {
+    bottom:max(66px, env(safe-area-inset-bottom));
+    min-width:min(360px, 84vw);
+  }
+}
+
+/* APK-M4 – Fixed Mobile Game Layout / Hard Mobile UI Rebuild
+   Patch correttiva: niente scroll pagina, niente pan/zoom libero obbligatorio,
+   mappa centrata con preset camera e pannelli bottom-sheet. */
+.mobileStatusStrip,
+.mobileGameBar { display:none; }
+
+@media (pointer: coarse), (max-width: 980px), (max-height: 560px) {
+  html.mobile-apk-m4-root {
+    width:100%;
+    height:100%;
+    overflow:hidden !important;
+    overscroll-behavior:none;
+  }
+  body.mobile-apk-m4 {
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100dvh;
+    min-height:0;
+    overflow:hidden !important;
+    overscroll-behavior:none;
+    touch-action:manipulation;
+    background:#080a10;
+    --m4-header-h: 36px;
+    --m4-bar-h: 39px;
+    --m4-status-h: 22px;
+    --m4-gap: 4px;
+    --m4-sheet-h: min(54dvh, 250px);
+  }
+  body.mobile-apk-m4 * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body.mobile-apk-m4 header.topTitleBar {
+    position:fixed !important;
+    z-index:80;
+    left:0;
+    right:0;
+    top:0;
+    height:var(--m4-header-h) !important;
+    min-height:var(--m4-header-h) !important;
+    padding:3px max(5px, env(safe-area-inset-right)) 3px max(5px, env(safe-area-inset-left)) !important;
+    grid-template-columns:72px 1fr 72px !important;
+    gap:5px !important;
+    background:rgba(6,8,13,.94) !important;
+    border-bottom:1px solid rgba(255,255,255,.12) !important;
+    backdrop-filter:none !important;
+  }
+  body.mobile-apk-m4 .topBarTitle h1 {
+    font-size:10px !important;
+    letter-spacing:.04em !important;
+    line-height:1 !important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  body.mobile-apk-m4 .topBarTitle h1 span { display:none !important; }
+  body.mobile-apk-m4 .topBarBtn {
+    min-width:0 !important;
+    width:100% !important;
+    min-height:27px !important;
+    height:27px !important;
+    padding:2px 5px !important;
+    border-radius:7px !important;
+    font-size:10px !important;
+    line-height:1 !important;
+  }
+
+  body.mobile-apk-m4 main.app {
+    display:block !important;
+    position:fixed !important;
+    z-index:10;
+    left:0;
+    right:0;
+    top:var(--m4-header-h);
+    bottom:0;
+    width:100%;
+    height:auto !important;
+    min-height:0 !important;
+    padding:0 !important;
+    margin:0 !important;
+    overflow:hidden !important;
+  }
+  body.mobile-apk-m4 .boardColumn { display:block !important; width:auto !important; height:auto !important; }
+  body.mobile-apk-m4 #boardWrap {
+    position:fixed !important;
+    z-index:12;
+    left:max(var(--m4-gap), env(safe-area-inset-left));
+    right:max(var(--m4-gap), env(safe-area-inset-right));
+    top:calc(var(--m4-header-h) + var(--m4-gap));
+    bottom:calc(var(--m4-bar-h) + max(var(--m4-gap), env(safe-area-inset-bottom))) !important;
+    width:auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+    border-radius:10px !important;
+    border:1px solid rgba(255,255,255,.11) !important;
+    background:radial-gradient(circle at 50% 48%, rgba(214,179,90,.08), rgba(255,255,255,.018) 42%, rgba(0,0,0,.22)), #111722 !important;
+    box-shadow:none !important;
+    touch-action:manipulation !important;
+    isolation:isolate;
+  }
+  body.mobile-apk-m4.mobile-panel-hand #boardWrap,
+  body.mobile-apk-m4.mobile-panel-command #boardWrap,
+  body.mobile-apk-m4.mobile-panel-setup #boardWrap {
+    bottom:calc(var(--m4-bar-h) + var(--m4-sheet-h) + max(var(--m4-gap), env(safe-area-inset-bottom))) !important;
+  }
+  body.mobile-apk-m4 #board {
+    width:920px !important;
+    height:780px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    position:relative !important;
+    border-radius:12px !important;
+    overflow:hidden !important;
+    transform:translate(var(--board-camera-x, 0px), var(--board-camera-y, 0px)) scale(var(--board-fit-scale, 1)) !important;
+    transform-origin:center center !important;
+    transition:none !important;
+    will-change:auto !important;
+    cursor:default !important;
+    touch-action:manipulation !important;
+  }
+  body.mobile-apk-m4 .mobileMapHud { display:none !important; }
+  body.mobile-apk-m4 .coord { display:none !important; }
+  body.mobile-apk-m4 .hex {
+    width:54px !important;
+    height:62px !important;
+    font-size:9px !important;
+    touch-action:manipulation !important;
+  }
+  body.mobile-apk-m4 .unitToken {
+    width:42px !important;
+    height:42px !important;
+    font-size:11px !important;
+  }
+  body.mobile-apk-m4 .unitToken .symbol,
+  body.mobile-apk-m4 .unitToken .symbol svg { width:22px !important; height:22px !important; }
+  body.mobile-apk-m4 .unitToken .statMini {
+    bottom:-10px !important;
+    font-size:8.8px !important;
+    padding:1px 3px !important;
+  }
+
+  body.mobile-apk-m4 .mobileStatusStrip {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:fixed;
+    z-index:84;
+    left:max(6px, env(safe-area-inset-left));
+    right:max(6px, env(safe-area-inset-right));
+    top:calc(var(--m4-header-h) + 5px);
+    height:var(--m4-status-h);
+    padding:2px 8px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:999px;
+    background:rgba(5,7,11,.68);
+    color:rgba(232,237,245,.86);
+    backdrop-filter:blur(3px);
+    font-size:9.5px;
+    font-weight:750;
+    letter-spacing:.035em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    pointer-events:none;
+    text-shadow:0 1px 5px rgba(0,0,0,.8);
+  }
+
+  body.mobile-apk-m4 .mobileGameBar {
+    display:grid;
+    grid-template-columns:repeat(6, minmax(0, 1fr));
+    gap:3px;
+    position:fixed;
+    z-index:86;
+    left:max(4px, env(safe-area-inset-left));
+    right:max(4px, env(safe-area-inset-right));
+    bottom:max(3px, env(safe-area-inset-bottom));
+    height:var(--m4-bar-h);
+    padding:3px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:11px;
+    background:rgba(6,8,13,.94);
+    box-shadow:0 -6px 22px rgba(0,0,0,.42);
+  }
+  body.mobile-apk-m4 .mobileGameBar button {
+    width:100%;
+    height:31px;
+    min-height:31px;
+    padding:2px 3px;
+    border-radius:8px;
+    font-size:10px;
+    line-height:1;
+    letter-spacing:.02em;
+    font-weight:850;
+    background:rgba(255,255,255,.045);
+    border-color:rgba(255,255,255,.13);
+  }
+  body.mobile-apk-m4 .mobileGameBar button:active { background:rgba(188,47,37,.42); }
+
+  body.mobile-apk-m4 .setupPanel,
+  body.mobile-apk-m4 .handPrimaryDock,
+  body.mobile-apk-m4 main.app > section.panel:last-child {
+    position:fixed !important;
+    z-index:70 !important;
+    left:max(4px, env(safe-area-inset-left)) !important;
+    right:max(4px, env(safe-area-inset-right)) !important;
+    bottom:calc(var(--m4-bar-h) + max(7px, env(safe-area-inset-bottom))) !important;
+    top:auto !important;
+    width:auto !important;
+    max-width:none !important;
+    height:var(--m4-sheet-h) !important;
+    min-height:0 !important;
+    max-height:var(--m4-sheet-h) !important;
+    display:block !important;
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+    transform:translateY(calc(100% + 14px)) !important;
+    transition:transform .16s ease, opacity .16s ease, visibility .16s ease !important;
+    overflow:hidden !important;
+    border-radius:12px 12px 10px 10px !important;
+    box-shadow:0 -12px 34px rgba(0,0,0,.58) !important;
+  }
+  body.mobile-apk-m4.mobile-panel-setup .setupPanel,
+  body.mobile-apk-m4.mobile-panel-hand .handPrimaryDock,
+  body.mobile-apk-m4.mobile-panel-command main.app > section.panel:last-child {
+    opacity:.985 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    transform:translateY(0) !important;
+  }
+  body.mobile-apk-m4 .marketDock { display:none !important; }
+
+  body.mobile-apk-m4 .panel,
+  body.mobile-apk-m4 .unitCard,
+  body.mobile-apk-m4 .buyCard,
+  body.mobile-apk-m4 .tacticCard { border-radius:10px !important; }
+  body.mobile-apk-m4 .panel h2,
+  body.mobile-apk-m4 .panel h3,
+  body.mobile-apk-m4 .setupPanel > details > summary,
+  body.mobile-apk-m4 summary {
+    min-height:28px !important;
+    padding:6px 8px !important;
+    font-size:11px !important;
+    line-height:1.1 !important;
+  }
+  body.mobile-apk-m4 .panel .body,
+  body.mobile-apk-m4 .setupPanel > details > .body,
+  body.mobile-apk-m4 .handPrimaryDock > .body,
+  body.mobile-apk-m4 main.app > section.panel:last-child > .body {
+    height:calc(100% - 29px) !important;
+    min-height:0 !important;
+    max-height:none !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    touch-action:pan-y;
+    padding:6px !important;
+  }
+  body.mobile-apk-m4 .setupPanel > details { height:100%; overflow:hidden; }
+  body.mobile-apk-m4 .setupPanel > details > .body { height:calc(100% - 29px) !important; }
+  body.mobile-apk-m4 .cardZonePanel {
+    height:100% !important;
+    max-height:none !important;
+    min-height:0 !important;
+    resize:none !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    touch-action:pan-y;
+    padding-right:4px !important;
+  }
+  body.mobile-apk-m4 #log {
+    height:96px !important;
+    min-height:96px !important;
+    max-height:40dvh !important;
+    overflow:auto !important;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
+    font-size:9.5px !important;
+  }
+  body.mobile-apk-m4 #actionPanel {
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:4px !important;
+  }
+  body.mobile-apk-m4 #actionPanel button,
+  body.mobile-apk-m4 .statsToolbar button,
+  body.mobile-apk-m4 .logToolbar button,
+  body.mobile-apk-m4 select,
+  body.mobile-apk-m4 button {
+    min-height:30px !important;
+    padding:4px 6px !important;
+    border-radius:8px !important;
+    font-size:10px !important;
+    line-height:1.1 !important;
+  }
+  body.mobile-apk-m4 label { font-size:9.5px !important; margin:3px 0 2px !important; }
+  body.mobile-apk-m4 .help { font-size:9.5px !important; line-height:1.25 !important; }
+  body.mobile-apk-m4 .scorebox { grid-template-columns:1fr 1fr !important; gap:4px !important; margin:4px 0 !important; }
+  body.mobile-apk-m4 .score { padding:5px !important; }
+  body.mobile-apk-m4 .score strong { font-size:10px !important; margin-bottom:2px !important; }
+  body.mobile-apk-m4 .score span { font-size:9px !important; }
+  body.mobile-apk-m4 .unitCard,
+  body.mobile-apk-m4 .buyCard,
+  body.mobile-apk-m4 .tacticCard { padding:6px !important; margin-bottom:5px !important; }
+  body.mobile-apk-m4 .unitCard h4,
+  body.mobile-apk-m4 .buyCard h4,
+  body.mobile-apk-m4 .tacticCard h4 { font-size:11px !important; margin-bottom:4px !important; }
+  body.mobile-apk-m4 .unitCard .meta,
+  body.mobile-apk-m4 .buyCard .meta,
+  body.mobile-apk-m4 .tacticCard .meta { font-size:9.5px !important; margin-bottom:4px !important; }
+  body.mobile-apk-m4 .pill { font-size:8.5px !important; padding:2px 4px !important; }
+  body.mobile-apk-m4 .stats { gap:3px !important; margin-top:4px !important; }
+  body.mobile-apk-m4 .bar { height:6px !important; }
+  body.mobile-apk-m4 .handStatusBanner { padding:5px !important; }
+  body.mobile-apk-m4 .handStatusGrid { grid-template-columns:1fr 1fr !important; gap:5px !important; }
+  body.mobile-apk-m4 .cardZoneGrid { grid-template-columns:1fr !important; gap:5px !important; }
+  body.mobile-apk-m4 .debugHandList { display:grid; grid-template-columns:1fr; gap:5px; }
+  body.mobile-apk-m4 .debugStarterGrid { grid-template-columns:repeat(3, minmax(0, 1fr)) !important; gap:4px !important; }
+  body.mobile-apk-m4 .debugCard strong { font-size:9.5px !important; }
+  body.mobile-apk-m4 .debugCard span { font-size:8.5px !important; }
+}
+
+@media (pointer: coarse) and (orientation: landscape), (max-height: 560px) and (orientation: landscape) {
+  body.mobile-apk-m4 {
+    --m4-header-h: 33px;
+    --m4-bar-h: 36px;
+    --m4-status-h: 20px;
+    --m4-sheet-h: min(58dvh, 214px);
+  }
+  body.mobile-apk-m4 .mobileStatusStrip { font-size:8.6px; top:calc(var(--m4-header-h) + 3px); height:19px; }
+  body.mobile-apk-m4 .mobileGameBar { height:var(--m4-bar-h); padding:2px; gap:2px; }
+  body.mobile-apk-m4 .mobileGameBar button { height:30px; min-height:30px; font-size:9.5px; }
+}
+
+@media (pointer: coarse) and (orientation: portrait), (max-width: 720px) and (orientation: portrait) {
+  body.mobile-apk-m4 {
+    --m4-header-h: 38px;
+    --m4-bar-h: 42px;
+    --m4-status-h: 23px;
+    --m4-sheet-h: min(48dvh, 360px);
+  }
+  body.mobile-apk-m4::before {
+    content:"Ruota il dispositivo in orizzontale per giocare meglio. La UI M4 resta utilizzabile anche in verticale.";
+    position:fixed;
+    z-index:90;
+    left:0;
+    right:0;
+    top:var(--m4-header-h);
+    padding:4px 8px;
+    text-align:center;
+    color:#ffe1a1;
+    background:rgba(90,55,10,.88);
+    border-bottom:1px solid rgba(227,189,103,.45);
+    font-size:10px;
+    pointer-events:none;
+  }
+  body.mobile-apk-m4 #boardWrap { top:calc(var(--m4-header-h) + 26px) !important; }
+  body.mobile-apk-m4 .mobileStatusStrip { top:calc(var(--m4-header-h) + 29px); }
+}
+
+
+/* APK-M4b – Options scroll + hand foreground microfix.
+   Mantiene il layout M4, ma rende Opzioni davvero scrollabile e la Mano dominante. */
+@media (pointer: coarse), (max-width: 980px), (max-height: 560px) {
+  body.mobile-apk-m4 {
+    --m4-hand-sheet-h: min(58dvh, 320px);
+    --m4-command-sheet-h: min(54dvh, 270px);
+    --m4-setup-top: calc(var(--m4-header-h) + max(6px, env(safe-area-inset-top)));
+    --m4-setup-bottom: calc(var(--m4-bar-h) + max(7px, env(safe-area-inset-bottom)));
+  }
+
+  body.mobile-apk-m4 .handPrimaryDock {
+    height: var(--m4-hand-sheet-h) !important;
+    max-height: var(--m4-hand-sheet-h) !important;
+    z-index: 78 !important;
+  }
+  body.mobile-apk-m4.mobile-panel-hand .handPrimaryDock {
+    z-index: 104 !important;
+    box-shadow: 0 -16px 42px rgba(0,0,0,.72) !important;
+  }
+  body.mobile-apk-m4 main.app > section.panel:last-child {
+    height: var(--m4-command-sheet-h) !important;
+    max-height: var(--m4-command-sheet-h) !important;
+  }
+
+  /* Opzioni: overlay alto, non mini bottom-sheet. Serve per vedere fazioni, comandanti,
+     bot/umano, preset, statistiche e pulsanti anche su smartphone landscape. */
+  body.mobile-apk-m4 .setupPanel {
+    top: var(--m4-setup-top) !important;
+    bottom: var(--m4-setup-bottom) !important;
+    height: auto !important;
+    max-height: none !important;
+    z-index: 80 !important;
+  }
+  body.mobile-apk-m4.mobile-panel-setup .setupPanel {
+    z-index: 106 !important;
+    box-shadow: 0 12px 44px rgba(0,0,0,.76) !important;
+  }
+  body.mobile-apk-m4.mobile-panel-setup #boardWrap {
+    bottom: calc(var(--m4-bar-h) + max(var(--m4-gap), env(safe-area-inset-bottom))) !important;
+  }
+  body.mobile-apk-m4 .setupPanel > details {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+  body.mobile-apk-m4 .setupPanel > details > summary {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    background: linear-gradient(180deg, rgba(18,22,31,.99), rgba(11,14,21,.97)) !important;
+  }
+  body.mobile-apk-m4 .setupPanel > details > .body {
+    height: calc(100% - 31px) !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+    padding: 7px 8px 18px !important;
+  }
+  body.mobile-apk-m4 .setupPanel .playerSetupRow {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr .78fr !important;
+    gap: 5px !important;
+  }
+  body.mobile-apk-m4 .setupPanel details:not(#gameOptionsDetails) > summary {
+    min-height: 26px !important;
+  }
+  body.mobile-apk-m4 .setupPanel .help {
+    max-height: 72px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 3px;
+  }
+
+  /* Quando una carta viene scelta, il pannello Mano sparisce e la mappa torna alta. */
+  body.mobile-apk-m4.mobile-hand-play-started .handPrimaryDock {
+    pointer-events: none !important;
+  }
+}
+
+/* =====================================================
+   F9A/F9B – Application Shell / Setup Screen Foundation
+   ===================================================== */
+.appScreen {
+  display: none;
+}
+.appScreen.isActive {
+  display: grid;
+}
+.gameScreen {
+  display: none;
+}
+body.app-screen-game .gameScreen {
+  display: block;
+}
+body.app-screen-menu .gameScreen,
+body.app-screen-setup .gameScreen,
+body.app-screen-deck-builder .gameScreen,
+body.app-screen-placeholder .gameScreen {
+  display: none !important;
+}
+.mainMenuScreen,
+.setupScreen,
+.deckBuilderScreen,
+.appPlaceholderScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 18;
+  min-height: 100dvh;
+  place-items: center;
+  padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+  overflow: auto;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.78)),
+    radial-gradient(circle at 50% 20%, rgba(150, 27, 24, .24), rgba(7, 8, 13, .96) 62%);
+}
+.mainMenuBackdrop {
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.66), rgba(0,0,0,.16), rgba(0,0,0,.7)),
+    url("../assets/intro/arena-rubra-title.png") center center / cover no-repeat;
+  opacity: .5;
+  filter: saturate(.88) brightness(.72);
+  pointer-events: none;
+}
+.mainMenuCard,
+.setupScreenCard,
+.deckBuilderCard,
+.placeholderCard {
+  position: relative;
+  width: min(620px, calc(100vw - 32px));
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 24px;
+  padding: 28px;
+  background: linear-gradient(180deg, rgba(22,24,33,.88), rgba(12,14,20,.92));
+  box-shadow: 0 28px 90px rgba(0,0,0,.55);
+  backdrop-filter: blur(10px);
+}
+.mainMenuKicker {
+  color: var(--muted);
+  font-weight: 750;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-size: 12px;
+  text-align: center;
+}
+.mainMenuCard h1 {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: clamp(36px, 7vw, 68px);
+  line-height: .94;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-shadow: 0 8px 28px rgba(0,0,0,.55);
+}
+.mainMenuStage {
+  margin-top: 8px;
+  text-align: center;
+  color: #f1d37b;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.mainMenuBuildBox {
+  display: grid;
+  gap: 5px;
+  margin: 20px 0 18px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 16px;
+  background: rgba(0,0,0,.32);
+  color: var(--muted);
+  font-size: 13px;
+}
+.mainMenuBuildBox strong {
+  color: var(--text);
+  display: inline-block;
+  min-width: 72px;
+}
+.mainMenuActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.mainMenuActions .primary {
+  grid-column: 1 / -1;
+  min-height: 46px;
+  font-size: 16px;
+}
+.mainMenuNotes {
+  margin: 16px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.setupScreenCard {
+  position: relative;
+  width: min(880px, calc(100vw - 32px));
+  max-height: calc(100dvh - 36px);
+  overflow: auto;
+}
+.setupScreenCard h2 {
+  margin: 8px 0 8px;
+  text-align: center;
+  font-size: clamp(26px, 4vw, 42px);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.setupIntro {
+  margin: 0 auto 18px;
+  color: var(--muted);
+  max-width: 680px;
+  text-align: center;
+  line-height: 1.45;
+  font-size: 13px;
+}
+.setupScreenGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.setupSideBox,
+.setupMatchBox {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(0,0,0,.25);
+}
+.setupSideBox h3,
+.setupMatchBox h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.setupSideBox select,
+.setupMatchBox select {
+  margin-bottom: 7px;
+}
+.setupMatchBox {
+  margin-top: 12px;
+}
+.setupMatchGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.setupCheckline {
+  margin-top: 8px;
+}
+.setupScreenActions {
+  display: grid;
+  grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+.setupScreenActions button {
+  min-height: 46px;
+}
+@media (max-width: 840px) {
+  .setupScreenGrid,
+  .setupMatchGrid,
+  .setupScreenActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.placeholderCard {
+  width: min(520px, calc(100vw - 32px));
+  text-align: center;
+}
+.placeholderCard h2 {
+  margin: 0 0 10px;
+  font-size: 24px;
+}
+.placeholderCard p {
+  color: var(--muted);
+  line-height: 1.45;
+}
+.topBarLeft {
+  gap: 8px;
+}
+.compactTopBarBtn {
+  min-width: 76px;
+  width: auto;
+}
+@media (max-width: 620px) {
+  .mainMenuCard,
+  .setupScreenCard,
+  .deckBuilderCard,
+  .placeholderCard {
+    padding: 20px;
+    border-radius: 20px;
+  }
+  .mainMenuActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   F9C – GameScreen Map-First Foundation
+   ===================================================== */
+.gameHudStrip,
+.gameActionBar {
+  display: none;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .gameScreen {
+  min-height: 100vh;
+  padding-bottom: 72px;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .gameHudStrip {
+  position: sticky;
+  top: 58px;
+  z-index: 19;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(12, 14, 20, .84);
+  backdrop-filter: blur(9px);
+}
+
+.hudChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(255,255,255,.035);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.hudPrimary {
+  color: #ffe1a1;
+  border-color: rgba(227,189,103,.38);
+  font-weight: 850;
+}
+.hudBuild {
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+  grid-template-columns: minmax(285px, 360px) minmax(420px, 1fr) minmax(320px, 400px);
+  grid-template-areas:
+    "board board board"
+    "setup hand command";
+  align-items: start;
+  gap: 14px;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .setupPanel { grid-area: setup; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn {
+  grid-area: board;
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) minmax(280px, 360px);
+  grid-template-areas:
+    "board hand"
+    "board market";
+  gap: 14px;
+  align-items: start;
+}
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn > #boardWrap { grid-area: board; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn > .handPrimaryDock { grid-area: hand; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn > .marketDebugDock { grid-area: market; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .commandLogPanel { grid-area: command; }
+
+body.app-screen-game:not(.mobile-apk-m4) #boardWrap {
+  min-height: 850px;
+}
+body.app-screen-game:not(.mobile-apk-m4) .handPrimaryDock,
+body.app-screen-game:not(.mobile-apk-m4) .marketDebugDock,
+body.app-screen-game:not(.mobile-apk-m4) .commandLogPanel,
+body.app-screen-game:not(.mobile-apk-m4) .setupPanel {
+  scroll-margin-top: 116px;
+}
+body.app-screen-game:not(.mobile-apk-m4) #boardWrap,
+body.app-screen-game:not(.mobile-apk-m4) #cardZonePanel,
+body.app-screen-game:not(.mobile-apk-m4) #selectedPanel,
+body.app-screen-game:not(.mobile-apk-m4) #actionPanel,
+body.app-screen-game:not(.mobile-apk-m4) #log,
+body.app-screen-game:not(.mobile-apk-m4) #gameOptionsDetails,
+body.app-screen-game:not(.mobile-apk-m4) #matchupStatsPanel {
+  scroll-margin-top: 116px;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 24;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(70px, 1fr));
+  gap: 8px;
+  padding: 10px 14px max(10px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255,255,255,.12);
+  background: rgba(10, 12, 18, .90);
+  backdrop-filter: blur(10px);
+}
+body.app-screen-game:not(.mobile-apk-m4) .gameActionBar button {
+  min-height: 38px;
+  padding: 8px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+@media (max-width: 1280px) {
+  body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "board"
+      "hand"
+      "market";
+  }
+}
+
+@media (max-width: 980px) {
+  body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "board"
+      "command"
+      "hand"
+      "setup";
+  }
+  body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+  }
+  body.app-screen-game:not(.mobile-apk-m4) .gameHudStrip {
+    top: 0;
+  }
+}
+
+body.mobile-apk-m4 .gameHudStrip,
+body.mobile-apk-m4 .gameActionBar {
+  display: none !important;
+}
+
+/* =====================================================
+   F9C1 – GameScreen UI Alignment Microfix
+   ===================================================== */
+.compactIconBtn {
+  width: auto;
+  min-width: 32px;
+  min-height: 28px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.selectedUnitFloat {
+  position: absolute;
+  z-index: 18;
+  top: 12px;
+  right: 12px;
+  width: min(360px, calc(100% - 24px));
+  max-height: calc(100% - 24px);
+  display: none;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 15px;
+  background: linear-gradient(180deg, rgba(20,24,34,.94), rgba(10,13,20,.91));
+  box-shadow: 0 14px 32px rgba(0,0,0,.48);
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+}
+.selectedUnitFloat.hasSelected { display: block; }
+.selectedUnitFloatHeader {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.11);
+  background: rgba(0,0,0,.23);
+}
+.selectedUnitFloatHeader strong {
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #ffe1a1;
+}
+.selectedUnitFloatBody {
+  max-height: min(610px, calc(100vh - 220px));
+  overflow: auto;
+  padding: 8px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.selectedUnitFloat.isCollapsed {
+  width: auto;
+  min-width: 172px;
+}
+.selectedUnitFloat.isCollapsed .selectedUnitFloatBody { display: none; }
+.selectedUnitFloat #selectedPanel,
+.selectedUnitFloat #actionPanel { margin: 0; }
+.selectedUnitFloat #selectedPanel { margin-bottom: 8px; }
+.selectedUnitFloat #actionPanel button { min-height: 34px; }
+
+#tacticPanel:empty::before {
+  content: "Avvia una partita per vedere le tattiche disponibili.";
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 8px 0;
+}
+#tacticPanel > div > h3 {
+  padding-left: 0 !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--line) !important;
+  margin-top: 0 !important;
+}
+
+.logDock {
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 13px;
+  overflow: hidden;
+  background: rgba(255,255,255,.02);
+}
+.logDockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+}
+.logDockHeader h3 {
+  flex: 1;
+  padding: 10px 12px !important;
+  border-bottom: 0 !important;
+  background: transparent !important;
+}
+.logDockHeader .compactIconBtn { margin-right: 8px; }
+.logDock .logToolbar { padding: 8px; }
+.logDock #log { border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0; }
+.logDock.isCollapsed .logToolbar,
+.logDock.isCollapsed #log { display: none; }
+.logDock.isCollapsed .logDockHeader { border-bottom: 0; }
+
+body.app-screen-game:not(.mobile-apk-m4) .commandLogPanel {
+  min-height: 0;
+}
+
+@media (max-width: 1280px) {
+  .selectedUnitFloat {
+    width: min(330px, calc(100% - 24px));
+  }
+}
+
+body.mobile-apk-m4 .mobileGameBar {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+}
+body.mobile-apk-m4 .selectedUnitFloat {
+  z-index: 46;
+  top: 6px;
+  right: 6px;
+  width: min(292px, calc(100% - 12px));
+  max-height: min(52%, 250px);
+  border-radius: 11px;
+  background: rgba(10,13,20,.93);
+  backdrop-filter: none;
+}
+body.mobile-apk-m4 .selectedUnitFloatHeader {
+  min-height: 28px;
+  padding: 4px 5px 4px 7px;
+}
+body.mobile-apk-m4 .selectedUnitFloatHeader strong { font-size: 9.5px; }
+body.mobile-apk-m4 .selectedUnitFloatBody {
+  max-height: 216px;
+  padding: 5px;
+}
+body.mobile-apk-m4 .selectedUnitFloat.isCollapsed {
+  min-width: 118px;
+  max-width: 42vw;
+}
+body.mobile-apk-m4 .selectedUnitFloat .unitCard,
+body.mobile-apk-m4 .selectedUnitFloat .tacticCard {
+  padding: 5px !important;
+  margin-bottom: 4px !important;
+}
+body.mobile-apk-m4 .selectedUnitFloat #actionPanel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px !important;
+}
+body.mobile-apk-m4 .selectedUnitFloat #actionPanel button {
+  min-height: 28px !important;
+  padding: 3px 5px !important;
+  font-size: 9.5px !important;
+}
+body.mobile-apk-m4 .logDockHeader h3 { font-size: 11px !important; min-height: 28px !important; }
+body.mobile-apk-m4 .logDock .logToolbar { padding: 5px !important; }
+
+/* =====================================================
+   F9D – PanelManager Foundation
+   ===================================================== */
+.gamePanelScrim {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: block;
+  background: rgba(0,0,0,.48);
+  backdrop-filter: blur(3px);
+}
+.gamePanelScrim[hidden] { display: none !important; }
+
+.managedGamePanel { scroll-margin-top: 120px; }
+.panelManagerCloseBtn {
+  position: sticky;
+  top: 8px;
+  float: right;
+  z-index: 3;
+  margin: 6px 6px 0 8px;
+  background: rgba(0,0,0,.42) !important;
+  border-color: rgba(255,255,255,.18) !important;
+}
+
+body.app-screen-game:not(.mobile-apk-m4).game-panel-open {
+  overflow: hidden;
+}
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive {
+  position: fixed !important;
+  z-index: 31 !important;
+  left: 50%;
+  bottom: max(76px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(820px, calc(100vw - 36px));
+  max-height: min(74vh, 760px);
+  overflow: auto;
+  box-shadow: 0 24px 70px rgba(0,0,0,.62);
+  border-color: rgba(227,189,103,.28) !important;
+  background: linear-gradient(180deg, rgba(18,22,32,.98), rgba(9,11,17,.97)) !important;
+  animation: panelManagerRise .18s ease-out;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+body.app-screen-game:not(.mobile-apk-m4) .setupPanel.panelOverlayActive {
+  width: min(980px, calc(100vw - 36px));
+}
+body.app-screen-game:not(.mobile-apk-m4) .commandLogPanel.panelOverlayActive {
+  width: min(900px, calc(100vw - 36px));
+}
+body.app-screen-game:not(.mobile-apk-m4) #logDock.panelOverlayActive {
+  width: min(820px, calc(100vw - 36px));
+}
+body.app-screen-game:not(.mobile-apk-m4) .handPrimaryDock.panelOverlayActive {
+  width: min(920px, calc(100vw - 36px));
+}
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive .body,
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive #cardZonePanel,
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive #log {
+  max-height: none;
+}
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive #log {
+  height: min(52vh, 520px);
+}
+body.app-screen-game:not(.mobile-apk-m4) #logDock.panelOverlayActive #log {
+  height: min(58vh, 560px);
+}
+
+@keyframes panelManagerRise {
+  from { opacity: 0; transform: translate(-50%, 18px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (max-width: 720px) {
+  body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel.panelOverlayActive {
+    width: calc(100vw - 18px);
+    bottom: max(64px, env(safe-area-inset-bottom));
+    max-height: 78vh;
+    border-radius: 16px;
+  }
+}
+
+body.mobile-apk-m4 .gamePanelScrim {
+  display: none !important;
+}
+body.mobile-apk-m4 .panelManagerCloseBtn {
+  display: none !important;
+}
+.managedGamePanel:not(.panelOverlayActive) > .panelManagerCloseBtn {
+  display: none !important;
+}
+.managedGamePanel.panelOverlayActive > .panelManagerCloseBtn {
+  display: inline-flex !important;
+}
+
+/* =====================================================
+   F9D1 – Panel Separation Microfix
+   ===================================================== */
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  grid-template-areas:
+    "board board board board"
+    "setup stats actions log";
+}
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .statsPanel { grid-area: stats; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .tacticDock { grid-area: actions; }
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .logPanel { grid-area: log; }
+body.app-screen-game:not(.mobile-apk-m4) .statsPanel,
+body.app-screen-game:not(.mobile-apk-m4) .tacticDock,
+body.app-screen-game:not(.mobile-apk-m4) .logPanel {
+  scroll-margin-top: 116px;
+}
+body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+  grid-template-columns: repeat(7, minmax(74px, 1fr));
+}
+body.app-screen-game:not(.mobile-apk-m4) .tacticDock h2,
+body.app-screen-game:not(.mobile-apk-m4) .statsPanel summary {
+  color: #ffe1a1;
+}
+body.app-screen-game:not(.mobile-apk-m4) .tacticDock.panelOverlayActive,
+body.app-screen-game:not(.mobile-apk-m4) .logPanel.panelOverlayActive,
+body.app-screen-game:not(.mobile-apk-m4) .statsPanel.panelOverlayActive {
+  width: min(860px, calc(100vw - 36px));
+}
+body.app-screen-game:not(.mobile-apk-m4) .logPanel.panelOverlayActive #log {
+  height: min(58vh, 560px);
+}
+body.app-screen-game:not(.mobile-apk-m4) .statsPanel.panelOverlayActive .body,
+body.app-screen-game:not(.mobile-apk-m4) .tacticDock.panelOverlayActive .body {
+  max-height: none;
+}
+body.app-screen-game:not(.mobile-apk-m4) .logPanel .panelManagerCloseBtn {
+  margin-right: 46px;
+}
+
+@media (max-width: 1180px) {
+  body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    grid-template-areas:
+      "board board"
+      "setup stats"
+      "actions log";
+  }
+}
+@media (max-width: 720px) {
+  body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "board"
+      "setup"
+      "stats"
+      "actions"
+      "log";
+  }
+  body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+  }
+}
+
+/* Mobile M4: after panel separation, actions/log/stats have their own sheets. */
+@media (pointer: coarse), (max-width: 980px), (max-height: 560px) {
+  body.mobile-apk-m4 .statsPanel,
+  body.mobile-apk-m4 .tacticDock,
+  body.mobile-apk-m4 .logPanel {
+    position: fixed !important;
+    z-index: 70 !important;
+    left: max(4px, env(safe-area-inset-left)) !important;
+    right: max(4px, env(safe-area-inset-right)) !important;
+    bottom: calc(var(--m4-bar-h) + max(7px, env(safe-area-inset-bottom))) !important;
+    top: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    height: var(--m4-command-sheet-h, min(54dvh, 270px)) !important;
+    min-height: 0 !important;
+    max-height: var(--m4-command-sheet-h, min(54dvh, 270px)) !important;
+    display: block !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(calc(100% + 14px)) !important;
+    transition: transform .16s ease, opacity .16s ease, visibility .16s ease !important;
+    overflow: hidden !important;
+    border-radius: 12px 12px 10px 10px !important;
+    box-shadow: 0 -12px 34px rgba(0,0,0,.58) !important;
+  }
+  body.mobile-apk-m4.mobile-panel-actions .tacticDock,
+  body.mobile-apk-m4.mobile-panel-log .logPanel,
+  body.mobile-apk-m4.mobile-panel-stats .statsPanel {
+    opacity: .985 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+    z-index: 104 !important;
+  }
+  body.mobile-apk-m4.mobile-panel-actions #boardWrap,
+  body.mobile-apk-m4.mobile-panel-log #boardWrap,
+  body.mobile-apk-m4.mobile-panel-stats #boardWrap {
+    bottom: calc(var(--m4-bar-h) + var(--m4-sheet-h) + max(var(--m4-gap), env(safe-area-inset-bottom))) !important;
+  }
+  body.mobile-apk-m4 .statsPanel > details,
+  body.mobile-apk-m4 .tacticDock,
+  body.mobile-apk-m4 .logPanel {
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+  body.mobile-apk-m4 .statsPanel > details > .body,
+  body.mobile-apk-m4 .tacticDock > .body,
+  body.mobile-apk-m4 .logPanel #log {
+    height: calc(100% - 31px) !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    touch-action: pan-y !important;
+    padding: 7px 8px 18px !important;
+  }
+  body.mobile-apk-m4 .logPanel .logToolbar {
+    padding: 5px 6px !important;
+  }
+  body.mobile-apk-m4 .logPanel #log {
+    height: calc(100% - 82px) !important;
+    min-height: 0 !important;
+  }
+  body.mobile-apk-m4 .statsPanel > details > summary,
+  body.mobile-apk-m4 .tacticDock > h2,
+  body.mobile-apk-m4 .logPanel .logDockHeader {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    background: linear-gradient(180deg, rgba(18,22,31,.99), rgba(11,14,21,.97)) !important;
+  }
+}
+
+/* =====================================================
+   F9E1 – HUD & Panel Usability Hotfix
+   ===================================================== */
+.gameHudStrip .hudMode {
+  max-width: min(520px, 38vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-color: rgba(255, 209, 112, .20);
+}
+.gameHudStrip .hudMode.hudModeActive {
+  color: #ffe1a1;
+  border-color: rgba(255, 209, 112, .42);
+  background: linear-gradient(180deg, rgba(92, 58, 19, .50), rgba(34, 24, 14, .74));
+  box-shadow: 0 0 0 1px rgba(255, 209, 112, .06) inset;
+}
+.gameHudStrip .hudMode[data-hud-tone="target"] {
+  color: #ffefbd;
+}
+.gameHudStrip .hudMode[data-hud-tone="move"] {
+  color: #d9f0ff;
+}
+.gameHudStrip .hudMode[data-hud-tone="victory"] {
+  color: #bfffc8;
+}
+
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: "board" !important;
+  align-items: stretch;
+}
+body.app-screen-game:not(.mobile-apk-m4) .mapFirstGameApp > .boardColumn {
+  grid-area: board;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas: "board" !important;
+}
+body.app-screen-game:not(.mobile-apk-m4) .managedGamePanel[data-game-panel-managed]:not(.panelOverlayActive) {
+  display: none !important;
+}
+body.app-screen-game:not(.mobile-apk-m4) #boardWrap {
+  min-height: min(850px, calc(100dvh - 178px));
+}
+
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .managedGamePanel.panelOverlayActive {
+  left: auto !important;
+  right: max(16px, env(safe-area-inset-right)) !important;
+  top: 128px !important;
+  bottom: max(76px, env(safe-area-inset-bottom)) !important;
+  transform: none !important;
+  width: min(440px, calc(100vw - 42px)) !important;
+  max-height: none !important;
+  animation: panelManagerSlideIn .18s ease-out !important;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .handPrimaryDock.panelOverlayActive {
+  width: min(520px, calc(100vw - 42px)) !important;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .tacticDock.panelOverlayActive {
+  width: min(430px, calc(100vw - 42px)) !important;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .managedGamePanel.panelOverlayActive .body,
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .managedGamePanel.panelOverlayActive #cardZonePanel,
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .managedGamePanel.panelOverlayActive #tacticPanel {
+  max-height: calc(100dvh - 232px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="bottom"] .managedGamePanel.panelOverlayActive {
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: max(76px, env(safe-area-inset-bottom)) !important;
+  transform: translateX(-50%) !important;
+  width: min(920px, calc(100vw - 36px)) !important;
+  max-height: min(66vh, 660px) !important;
+  animation: panelManagerRise .18s ease-out !important;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-current="log"] .logPanel.panelOverlayActive,
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-current="stats"] .statsPanel.panelOverlayActive,
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-current="setup"] .setupPanel.panelOverlayActive {
+  width: min(980px, calc(100vw - 36px)) !important;
+}
+body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-current="log"] .logPanel.panelOverlayActive #log {
+  height: min(52vh, 520px) !important;
+}
+body.app-screen-game:not(.mobile-apk-m4) .selectedUnitFloat {
+  top: 14px;
+  right: 14px;
+  width: min(380px, calc(100% - 28px));
+}
+body.app-screen-game:not(.mobile-apk-m4) .selectedUnitFloat.isCollapsed {
+  width: auto;
+  min-width: 184px;
+}
+body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+  grid-template-columns: repeat(7, minmax(74px, 1fr)) !important;
+}
+
+@keyframes panelManagerSlideIn {
+  from { opacity: 0; transform: translateX(18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 720px) {
+  .gameHudStrip .hudMode { max-width: 100%; }
+  body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="side"] .managedGamePanel.panelOverlayActive,
+  body.app-screen-game:not(.mobile-apk-m4)[data-game-panel-placement="bottom"] .managedGamePanel.panelOverlayActive {
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: max(64px, env(safe-area-inset-bottom)) !important;
+    transform: translateX(-50%) !important;
+    width: calc(100vw - 18px) !important;
+    max-height: 78vh !important;
+    animation: panelManagerRise .18s ease-out !important;
+  }
+}
+
+
+/* =====================================================
+   F9G – Camera Foundation
+   ===================================================== */
+.hudCamera {
+  color: rgba(216, 235, 255, .82);
+  border-color: rgba(132,185,255,.22);
+}
+.hudCamera[data-camera-mode="focus"] {
+  color: #d9f0ff;
+  border-color: rgba(132,185,255,.45);
+  background: linear-gradient(180deg, rgba(35,58,86,.42), rgba(15,23,36,.74));
+}
+body.app-screen-game:not(.mobile-apk-m4) #boardWrap {
+  overflow: hidden;
+}
+body.app-screen-game:not(.mobile-apk-m4) #board {
+  width: 920px;
+  height: 780px;
+  max-width: none;
+  flex: 0 0 auto;
+}
+body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+  grid-template-columns: repeat(7, minmax(74px, 1fr)) !important;
+}
+@media (max-width: 720px) {
+  body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
+    grid-template-columns: repeat(4, minmax(70px, 1fr)) !important;
+  }
+}
+
+
+/* =====================================================
+   F9H1 – Deck Builder Read/Validate Foundation
+   ===================================================== */
+.deckBuilderCard {
+  position: relative;
+  width: min(1180px, calc(100vw - 32px));
+  max-height: calc(100dvh - 36px);
+  overflow: auto;
+}
+.deckBuilderHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+}
+.deckBuilderHeader h2 {
+  margin: 8px 0 8px;
+  font-size: clamp(28px, 4.8vw, 48px);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.deckBuilderIntro {
+  margin: 0;
+  max-width: 760px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: 13px;
+}
+.deckBuilderHeaderActions {
+  display: grid;
+  gap: 8px;
+  min-width: 190px;
+}
+.deckBuilderControls {
+  display: grid;
+  grid-template-columns: minmax(160px, .7fr) minmax(220px, 1.2fr) minmax(240px, 1fr);
+  gap: 12px;
+  align-items: end;
+  margin: 18px 0 14px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: rgba(0,0,0,.24);
+}
+.deckBuilderMeta {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 12px;
+  background: rgba(0,0,0,.25);
+}
+.deckBuilderSummary {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.deckBuilderStatus {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.28);
+}
+.deckBuilderStatus.good { border-color: rgba(79,157,88,.55); color: #dcffe1; }
+.deckBuilderStatus.bad { border-color: rgba(216,74,68,.62); color: #ffd8d4; }
+.deckBuilderStatus span { color: var(--muted); }
+.deckBuilderStatGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+.deckBuilderRuleBox,
+.deckBuilderIssueBox {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.deckBuilderIssueBox {
+  border-color: rgba(216,74,68,.45);
+  color: #ffd8d4;
+}
+.deckBuilderColumns {
+  display: grid;
+  grid-template-columns: minmax(260px, .75fr) minmax(420px, 1.25fr);
+  gap: 12px;
+}
+.deckBuilderBox {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  background: rgba(0,0,0,.24);
+}
+.deckBuilderBox h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.deckBuilderPoolBox { margin-top: 12px; }
+.deckBuilderTableWrap {
+  max-height: 300px;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+}
+.deckBuilderPoolTableWrap { max-height: 360px; }
+.deckBuilderTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.deckBuilderTable th,
+.deckBuilderTable td {
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  text-align: left;
+  vertical-align: top;
+}
+.deckBuilderTable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgba(16,18,25,.96);
+  color: #f1d37b;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.deckBuilderTable tr.deckBuilderInTemplate td {
+  background: rgba(79,157,88,.1);
+}
+.deckBuilderStarterList {
+  display: grid;
+  gap: 8px;
+}
+.deckBuilderStarterCard h4 {
+  margin-bottom: 3px;
+}
+@media (max-width: 900px) {
+  .deckBuilderHeader,
+  .deckBuilderControls,
+  .deckBuilderColumns,
+  .deckBuilderStatGrid {
+    grid-template-columns: 1fr;
+  }
+  .deckBuilderHeaderActions {
+    min-width: 0;
+  }
+}
