@@ -1,0 +1,15 @@
+CHECK C2e-4g1-APK-M2
+
+- Base: C2e-4g1 APK-M1.
+- node --check src/*.js data/*.js: OK.
+- Scan funzioni duplicate in src/*.js: OK.
+- Verifica version label C2e-4g1-APK-M2: OK.
+- ZIP integrity: OK.
+
+Da validare manualmente su APK Android:
+- pan mappa;
+- zoom +/−;
+- pinch zoom;
+- tap celle/unità dopo pan;
+- drawer Mano/Cmd/Opz;
+- rotazione e pulsante Adatta/Reset.

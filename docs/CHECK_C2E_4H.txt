@@ -1,0 +1,32 @@
+C2e-4h – Superior Doctrine Calibration – check sintetico
+
+Base usata:
+- C2e-4g1-APK-M4c mobile baseline stable microfix
+
+Perimetro:
+- AI doctrine only
+- nessun cambio numerico a fazioni/unità/tattiche/regole
+- UI mobile M4c invariata
+- deck rules C2e-4g1 invariati
+- danno normale no-overflow invariato
+
+File modificati:
+- src/ai.js
+- src/constants.js
+- src/game.js
+- index.html
+- README.md
+- docs/C2E_4H_SUPERIOR_DOCTRINE_CALIBRATION.md
+- docs/CHECK_C2E_4H.txt
+
+Controlli da eseguire:
+- node --check src/*.js
+- node --check data/*.js
+- scan funzioni duplicate
+- zip integrity
+
+Cosa osservare:
+- Exordium anti-Nexus e anti-Liberti
+- Fabeot conversione valore -> territorio
+- Agathoi radicamento offensivo vs Nexus
+- nessun override improprio delle emergenze C2e-4g

@@ -1,0 +1,8 @@
+CHECK C2e-4a
+
+- node --check src/*.js data/*.js
+- avvio partita bot vs bot in modalità Avanzata
+- osservare round 1-4: PS laterale + centro
+- osservare PS controllati: expand/fortify/clearThreat
+- osservare round 8-10: log AI plan e postura pressione/QG/crisi
+- regressione D1b: stat unità in mappa e movimento immediato

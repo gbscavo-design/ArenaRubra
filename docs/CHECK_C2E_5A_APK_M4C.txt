@@ -1,0 +1,15 @@
+C2e-5a APK-M4c – Nexus Protocol Block Fine Balance
+
+Base: C2e-4h2 APK-M4c Full Log Export Microfix
+
+Controlli richiesti:
+- node --check src/*.js: OK
+- node --check data/*.js: OK
+- scan funzioni duplicate src/data: OK
+- zip integrity: OK
+
+Modifica funzionale:
+- NX_TAC_BLOCK / Protocollo di Blocco: cost 1, value 1.
+
+Non toccato:
+- AI doctrine, deck, log export, mobile UI, splash/audio, mappa, roster, altri valori numerici, regola danno no-overflow.

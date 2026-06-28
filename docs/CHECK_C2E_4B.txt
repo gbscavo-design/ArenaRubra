@@ -1,0 +1,6 @@
+CHECK C2e-4b
+1. node --check src/*.js data/*.js.
+2. Bot vs bot Exordium vs Nexus: osservare recupero PS, target anti-Nexus, strutture di linea.
+3. Bot vs bot Exordium vs Liberti: osservare nucleo d’urto supportato e meno inseguimento caotico.
+4. Bot vs bot Exordium vs Fabeot: verificare che Exordium continui a presidiare e avanzare senza distrarsi.
+5. Regressione C2e-4a2: 0 PS recovery, pressure emergency, mine awareness.

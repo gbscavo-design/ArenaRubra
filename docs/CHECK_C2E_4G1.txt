@@ -1,0 +1,6 @@
+CHECK C2e-4g1
+
+- node --check src/*.js data/*.js: OK
+- Deck sanity: 30/30 per tutte le fazioni, nessuna violazione copie, 1 comandante, max 1 pivot, elite unique.
+- Starter loadout escluso dal deck: controllato via deck pool.
+- ZIP integrity: OK

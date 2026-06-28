@@ -1,0 +1,10 @@
+C2e-4f Fabeot Deception / Surrender Pressure Profile
+
+Controlli:
+- node --check src/*.js data/*.js: OK
+- duplicate function scan: OK
+- zip integrity: OK
+
+Perimetro:
+- solo AI Fabeot
+- nessuna modifica numerica/regolistica/economica/UI/mappa

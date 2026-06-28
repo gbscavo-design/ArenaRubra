@@ -1,0 +1,31 @@
+F9A – Application Shell / Main Menu Foundation
+
+Base:
+- C2-STABLE-1-APK-M4c Starter Logic Freeze Candidate
+
+Modifiche:
+- aggiunto src/build_info.js
+- aggiunto src/app.js
+- aggiunto menu principale
+- aggiunti placeholder schermate future
+- avvio partita da menu
+- top bar e export leggono BUILD_INFO
+
+Non modificato:
+- gameplay
+- AI
+- deck
+- tattiche
+- mappa
+- roster
+- costi
+- HP / DEF / ATT
+- regola danno no-overflow
+- splash/audio
+- mobile gameplay UI M4c
+
+Controlli richiesti:
+- node --check src/*.js data/*.js
+- duplicate function scan
+- zip integrity
+

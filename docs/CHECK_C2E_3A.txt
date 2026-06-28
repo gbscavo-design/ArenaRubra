@@ -1,0 +1,8 @@
+CHECK C2e-3a – Bot Deck Cycle / Last Card Hotfix
+
+1. Avvia una partita bot con deck/hand visibili.
+2. Porta il bot a deck vuoto, scarti disponibili e una sola carta unità in mano.
+3. Se la carta è giocabile e il bot ha ENE sufficiente, deve giocarla con priorità alta.
+4. Dopo che la mano è vuota, il recupero deck deve poter ripartire pagando 5 ENE e pescando 3.
+5. Se il QG è sotto minaccia immediata di vittoria nemica, la priorità dell’ultima carta deve essere sospesa salvo giocata difensiva.
+6. Regressione: cap strutture 6/Agathoi 7, tattiche C2 bot, comandanti, income 3, cap mano 10, recupero deck.

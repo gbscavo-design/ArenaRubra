@@ -1,0 +1,8 @@
+CHECK C2e-4g1 APK-M3
+
+- Asset intro presenti: OK
+- Asset audio presente: OK
+- node --check src/*.js data/*.js: OK
+- Scan funzioni duplicate src/*.js: OK
+- ZIP integrity: OK
+- Gameplay/AI/deck/tattiche/bilanciamento non modificati intenzionalmente.

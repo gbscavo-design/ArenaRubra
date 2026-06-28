@@ -1,0 +1,6 @@
+CHECK C2e-4g1 APK-M3b
+
+- node --check src/*.js data/*.js: OK
+- scan funzioni duplicate in src/*.js: OK
+- asset intro presenti: g-vibe-dev-logo.png, arena-rubra-title.png, 432-hertz-rift.mp3
+- ZIP integrity: OK

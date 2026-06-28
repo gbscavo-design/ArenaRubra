@@ -1,0 +1,20 @@
+C2e-6a APK-M4c – Starter Map Expansion MAP1
+
+Base: C2e-5a APK-M4c Nexus Protocol Block Tune
+
+Controlli richiesti:
+- node --check src/*.js: OK
+- node --check data/*.js: OK
+- scan funzioni duplicate src/data: OK
+- zip integrity: OK
+
+Modifica funzionale:
+- Radius mappa: 5 -> 6.
+- Celle: 91 -> 127.
+- QG: [-6,0,6] / [6,0,-6].
+- PS invariati: [0,0,0], [0,-4,4], [0,4,-4].
+- Board/render/mobile camera adattati a 920x780.
+- Target flank Liberti scalato su RADIUS.
+
+Non toccato:
+- Stat/costi/HP/DEF/ATT, roster, deck, tattiche, AI doctrine sostanziale, log export, splash/audio, regola danno no-overflow.

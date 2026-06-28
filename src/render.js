@@ -18,6 +18,7 @@
       renderCardZonePanel();
       renderMatchupStats();
       if (typeof renderCurrentMatchStatsPanel === "function") renderCurrentMatchStatsPanel();
+      if (typeof renderPersistentMatchHistoryPanel === "function") renderPersistentMatchHistoryPanel();
       if (typeof renderGameHud === "function") renderGameHud();
       if (typeof syncBoardCameraAfterRender === "function") syncBoardCameraAfterRender();
     }

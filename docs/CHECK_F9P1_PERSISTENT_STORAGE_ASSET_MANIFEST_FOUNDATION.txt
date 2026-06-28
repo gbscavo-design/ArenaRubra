@@ -1,0 +1,26 @@
+CHECK F9P1 – Persistent Storage + Asset Manifest Foundation
+
+Base: C2-STABLE-1-F9H3-APK-M4c
+Output: C2-STABLE-1-F9P1-APK-M4c
+
+Verifiche richieste:
+1. Menu -> Costruisci deck.
+2. Salva un deck valido.
+3. Usa Esporta tutti deck JSON.
+4. Usa Importa deck JSON incollando l'export appena copiato.
+5. Setup -> seleziona Deck personalizzato salvato -> avvia partita.
+6. Concludi una partita o forza vittoria/concessione.
+7. Stats -> Storico partite persistente: deve comparire un record.
+8. Copia storico JSON.
+9. Reset storico partite.
+10. Verifica che log completo/eventi JSON/stats JSON funzionino ancora.
+11. Deck Builder -> Copia manifest asset carte.
+12. Avvio partita template: gameplay identico a F9H3.
+
+Controlli tecnici eseguiti in patch:
+- node --check su src/*.js e data/*.js.
+- scan funzioni duplicate.
+- scan ID HTML duplicati.
+- generazione manifest asset carte da catalogo.
+- simulazione storage deck/storico via VM/localStorage stub.
+- integrità ZIP.

@@ -1,0 +1,13 @@
+CHECK C2e-4g1-APK-M1
+
+- Base usata: C2e-4g1 log export / deck rules / Fabeot tune.
+- node --check src/*.js data/*.js: OK
+- Duplicate functions scan src/*.js: OK
+- ZIP integrity: OK
+
+Manual test consigliato:
+1. aprire su smartphone/APK in orizzontale;
+2. verificare mappa intera visibile;
+3. selezionare unità e muovere/attaccare;
+4. aprire mano/log;
+5. ruotare e premere Adatta.

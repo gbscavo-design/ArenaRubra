@@ -1,0 +1,12 @@
+C2e-4g AI Integration / Regression Pass
+
+Base usata: arena_rubra_C2e_4f_fabeot_deception_surrender_pressure_profile.zip
+
+Controlli effettuati:
+- node --check su src/*.js e data/*.js: OK
+- scan funzioni duplicate in src/*.js: OK
+- unzip -t archivio finale: OK
+
+Note:
+- Nessun intervento intenzionale su costi/stat/regole base.
+- Regola danno normale no-overflow preservata in src/combat.js.

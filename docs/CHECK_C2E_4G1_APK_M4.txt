@@ -1,0 +1,13 @@
+CHECK C2e-4g1 APK-M4
+
+Base: C2e-4g1 APK-M3b Intro Flow Polish.
+
+Controlli eseguiti:
+- node --check src/*.js data/*.js: OK
+- scan funzioni duplicate src/data: OK
+- asset intro/audio preservati: OK
+- zip integrity: OK
+
+Scope:
+- Solo UI mobile fixed-layout / bottom-sheet / camera preset.
+- Gameplay, AI, deck, tattiche, bilanciamento, mappa logica e no-overflow damage non modificati.

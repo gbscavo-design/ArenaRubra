@@ -370,12 +370,33 @@ function createInitialHandFromDeck(deck, options = {}) {
   };
 }
 
+function selectedDeckModeForSide(side) {
+  const sel = state && state.selectedDecks ? state.selectedDecks[side] : null;
+  return sel && sel.mode === "custom" ? "custom" : "template";
+}
+
+function buildRawRuntimeDeckForSide(side, faction, sourceCatalog, selectedCommanderId) {
+  const mode = selectedDeckModeForSide(side);
+  if (mode === "custom") {
+    if (typeof deckBuilderValidatedSavedDeckForRuntime !== "function") {
+      throw new Error(`Deck personalizzato G${side} richiesto ma Deck Builder runtime non disponibile.`);
+    }
+    const check = deckBuilderValidatedSavedDeckForRuntime(faction, selectedCommanderId, sourceCatalog);
+    if (!check || !check.ok) {
+      const issues = check && Array.isArray(check.issues) ? check.issues.join("; ") : "deck personalizzato assente/non valido";
+      throw new Error(`Deck personalizzato G${side} non valido: ${issues}`);
+    }
+    return check.cards.map((card, i) => createCardInstance(card, null, "deck", i));
+  }
+  return buildDebugDeckForFaction(faction, sourceCatalog, null, { selectedCommanderId });
+}
+
 function initializeCardZonesForPlayer(side, catalog = null) {
   const faction = state.factions[side];
   const sourceCatalog = catalog || buildCardCatalog();
   const starterLoadout = selectStarterLoadoutForFaction(faction, sourceCatalog);
   const selectedCommanderId = typeof selectedCommanderBlueprintIdForSide === "function" ? selectedCommanderBlueprintIdForSide(side, sourceCatalog) : null;
-  const rawDeck = buildDebugDeckForFaction(faction, sourceCatalog, null, { selectedCommanderId });
+  const rawDeck = buildRawRuntimeDeckForSide(side, faction, sourceCatalog, selectedCommanderId);
   const split = createInitialHandFromDeck(rawDeck);
 
   const deck = split.deck.map((card, i) => createCardInstance(card, side, "deck", i));
@@ -420,6 +441,7 @@ function initializeCardZonesForGame() {
     deckSize: { 1: state.deck[1].length, 2: state.deck[2].length },
     handSize: { 1: state.hand[1].length, 2: state.hand[2].length },
     selectedCommanders: state.selectedCommanders ? { ...state.selectedCommanders } : {},
+    selectedDecks: state.selectedDecks ? { 1: { ...(state.selectedDecks[1] || {}) }, 2: { ...(state.selectedDecks[2] || {}) } } : {},
     runtimeDeckShuffled: shouldShuffleRuntimeDeckAfterInitialHand(),
     runtimeDeckShuffleMode: shouldShuffleRuntimeDeckAfterInitialHand() ? "after_initial_hand" : "off",
     starterSlots: {

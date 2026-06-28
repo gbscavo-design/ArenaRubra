@@ -1,6 +1,6 @@
 "use strict";
 
-// Arena Rubra – F9H1 AppShell / Deck Builder Foundation.
+// Arena Rubra – F9P1 AppShell / Storage Import/Export UX Hotfix.
 // Scopo: mantenere AppShell/SetupScreen stabili e collegare la GameScreen al PanelManager senza toccare la logica Starter congelata.
 
 const ARENA_APP_SCREENS = Object.freeze({
@@ -111,6 +111,60 @@ function refreshSetupCommanderSelects() {
   populateSetupCommanderSelectForSide(2);
 }
 
+function setupDeckInfoForSide(side) {
+  const faction = readControlValue(`setupP${side}Faction`, side === 1 ? "Nexus" : "Exordium");
+  const commanderId = readControlValue(`setupP${side}Commander`, "");
+  const mode = readControlValue(`setupP${side}DeckMode`, "template");
+  const check = typeof deckBuilderSavedStatusForSetup === "function"
+    ? deckBuilderSavedStatusForSetup(faction, commanderId)
+    : { ok: false, exists: false, issues: ["Deck Builder non inizializzato"] };
+  return { side, faction, commanderId, mode, check };
+}
+
+function refreshSetupDeckSelectorForSide(side) {
+  const modeSelect = document.getElementById(`setupP${side}DeckMode`);
+  const infoEl = document.getElementById(`setupP${side}DeckInfo`);
+  if (!modeSelect || !infoEl) return;
+  const info = setupDeckInfoForSide(side);
+  const customOption = Array.from(modeSelect.options || []).find(opt => opt.value === "custom");
+  const savedAt = info.check && info.check.payload ? info.check.payload.savedAt : "";
+  if (customOption) customOption.textContent = info.check && info.check.ok ? "Deck personalizzato salvato" : "Deck personalizzato salvato (non disponibile)";
+  infoEl.classList.toggle("good", info.mode === "custom" && info.check && info.check.ok);
+  infoEl.classList.toggle("bad", info.mode === "custom" && (!info.check || !info.check.ok));
+  if (info.mode === "custom") {
+    infoEl.textContent = info.check && info.check.ok
+      ? `Deck personalizzato valido: ${info.faction} · ${info.check.payload.commanderName || info.commanderId} · ${info.check.deckIds.length} carte${savedAt ? ` · ${savedAt}` : ""}.`
+      : `Deck personalizzato non disponibile/valido: ${((info.check && info.check.issues) || ["nessun deck salvato"]).join("; ")}.`;
+  } else {
+    infoEl.textContent = info.check && info.check.ok
+      ? `Deck automatico Starter. Esiste anche un deck personalizzato salvato per questa fazione/comandante.`
+      : `Deck automatico Starter.`;
+  }
+}
+
+function refreshSetupDeckSelectors() {
+  refreshSetupDeckSelectorForSide(1);
+  refreshSetupDeckSelectorForSide(2);
+}
+
+function validateSetupDeckSelectionsBeforeStart() {
+  const issues = [];
+  [1, 2].forEach(side => {
+    const info = setupDeckInfoForSide(side);
+    if (info.mode !== "custom") return;
+    if (!info.check || !info.check.ok) {
+      issues.push(`G${side}: ${((info.check && info.check.issues) || ["deck personalizzato non valido"]).join("; ")}`);
+    }
+  });
+  const errorEl = document.getElementById("setupDeckError");
+  if (errorEl) {
+    errorEl.classList.toggle("bad", issues.length > 0);
+    errorEl.textContent = issues.length ? `Impossibile avviare: ${issues.join(" | ")}` : "";
+  }
+  if (issues.length && typeof alert === "function") alert(`Deck personalizzato non valido.\n${issues.join("\n")}`);
+  return { ok: issues.length === 0, issues };
+}
+
 function syncSetupScreenFromLegacyControls() {
   writeControlValue("setupP1Faction", readControlValue("p1Faction", "Nexus"));
   writeControlValue("setupP2Faction", readControlValue("p2Faction", "Exordium"));
@@ -122,6 +176,9 @@ function syncSetupScreenFromLegacyControls() {
   writeControlValue("setupInitiativeMode", readControlValue("initiativeMode", "random"));
   writeControlValue("setupBotAiMode", readControlValue("botAiMode", "advanced"));
   writeControlValue("setupPacePreset", readControlValue("pacePreset", "standard"));
+  writeControlValue("setupP1DeckMode", readControlValue("p1DeckMode", "template"));
+  writeControlValue("setupP2DeckMode", readControlValue("p2DeckMode", "template"));
+  refreshSetupDeckSelectors();
   const legacyAuto = document.getElementById("autoResignToggle");
   const setupAuto = document.getElementById("setupAutoResignToggle");
   if (legacyAuto && setupAuto) setupAuto.checked = legacyAuto.checked;
@@ -138,6 +195,8 @@ function syncLegacyControlsFromSetupScreen() {
   writeControlValue("initiativeMode", readControlValue("setupInitiativeMode", "random"));
   writeControlValue("botAiMode", readControlValue("setupBotAiMode", "advanced"));
   writeControlValue("pacePreset", readControlValue("setupPacePreset", "standard"));
+  writeControlValue("p1DeckMode", readControlValue("setupP1DeckMode", "template"));
+  writeControlValue("p2DeckMode", readControlValue("setupP2DeckMode", "template"));
   const legacyAuto = document.getElementById("autoResignToggle");
   const setupAuto = document.getElementById("setupAutoResignToggle");
   if (legacyAuto && setupAuto) legacyAuto.checked = setupAuto.checked;
@@ -150,9 +209,24 @@ function openNewGameSetupScreen() {
 }
 
 function startGameFromSetupScreen() {
+  refreshSetupDeckSelectors();
+  const deckCheck = validateSetupDeckSelectionsBeforeStart();
+  if (!deckCheck.ok) return;
   syncLegacyControlsFromSetupScreen();
   setAppScreen(ARENA_APP_SCREENS.GAME);
-  if (typeof newGame === "function") newGame();
+  if (typeof newGame === "function") {
+    try {
+      newGame();
+    } catch (err) {
+      console.error("Avvio partita fallito", err);
+      setAppScreen(ARENA_APP_SCREENS.SETUP);
+      const errorEl = document.getElementById("setupDeckError");
+      if (errorEl) {
+        errorEl.classList.add("bad");
+        errorEl.textContent = `Avvio partita fallito: ${err && err.message ? err.message : err}`;
+      }
+    }
+  }
 }
 
 
@@ -168,7 +242,7 @@ function appPlaceholderText(screen) {
   if (screen === ARENA_APP_SCREENS.ABOUT && typeof BUILD_INFO !== "undefined") {
     return `${label}: ${BUILD_INFO.version} · ${BUILD_INFO.buildName} · baseline ${BUILD_INFO.logicBaseline}.`;
   }
-  return `${label}: placeholder F9H1. La schermata verrà implementata nelle prossime sottofasi senza modificare la logica Starter congelata.`;
+  return `${label}: placeholder F9P1. La schermata verrà implementata nelle prossime sottofasi senza modificare la logica Starter congelata.`;
 }
 
 function showAppPlaceholder(screen) {
@@ -192,6 +266,7 @@ function resumeGameFromAppMenu() {
 }
 
 function openMainMenu() {
+  refreshSetupDeckSelectors();
   setAppScreen(ARENA_APP_SCREENS.MAIN_MENU);
 }
 
@@ -258,11 +333,27 @@ function initializeArenaAppShell() {
     const factionSelect = document.getElementById(`setupP${side}Faction`);
     if (factionSelect && factionSelect.dataset.bound !== "1") {
       factionSelect.dataset.bound = "1";
-      factionSelect.addEventListener("change", () => refreshSetupCommanderSelects());
+      factionSelect.addEventListener("change", () => {
+        populateSetupCommanderSelectForSide(side);
+        refreshSetupDeckSelectorForSide(side);
+      });
+    }
+
+    const commanderSelect = document.getElementById(`setupP${side}Commander`);
+    if (commanderSelect && commanderSelect.dataset.deckBound !== "1") {
+      commanderSelect.dataset.deckBound = "1";
+      commanderSelect.addEventListener("change", () => refreshSetupDeckSelectorForSide(side));
+    }
+
+    const deckModeSelect = document.getElementById(`setupP${side}DeckMode`);
+    if (deckModeSelect && deckModeSelect.dataset.deckBound !== "1") {
+      deckModeSelect.dataset.deckBound = "1";
+      deckModeSelect.addEventListener("change", () => refreshSetupDeckSelectorForSide(side));
     }
   });
 
   refreshSetupCommanderSelects();
+  refreshSetupDeckSelectors();
 
   const topNewGame = document.getElementById("newGameBtn");
   if (topNewGame && topNewGame.dataset.appShellPatched !== "1") {
@@ -280,5 +371,6 @@ function initializeArenaAppShell() {
     returnMenuBtn.addEventListener("click", openMainMenu);
   }
 
+  refreshSetupDeckSelectors();
   setAppScreen(ARENA_APP_SCREENS.MAIN_MENU);
 }

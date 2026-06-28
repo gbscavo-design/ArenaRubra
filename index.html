@@ -31,8 +31,8 @@
       <h1><span id="buildAppName">Arena Rubra</span></h1>
       <div class="mainMenuStage" id="buildStage">Starter Game ALPHA</div>
       <div class="mainMenuBuildBox">
-        <div><strong>Build</strong> <span id="menuBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span></div>
-        <div><strong>Patch</strong> <span id="menuBuildName">Deck Builder Read/Validate Foundation</span></div>
+        <div><strong>Build</strong> <span id="menuBuildVersion">C2-STABLE-1-F9I1-APK-M4c</span></div>
+        <div><strong>Patch</strong> <span id="menuBuildName">Card Renderer Preview Foundation</span></div>
         <div><strong>Baseline</strong> <span id="menuLogicBaseline">C2-STABLE-1-APK-M4c</span></div>
         <div><strong>Canale</strong> <span id="menuBuildChannel">freeze-candidate</span></div>
         <div><strong>Data</strong> <span id="menuBuildDate">2026-06-27</span></div>
@@ -76,6 +76,12 @@
             <option value="human">Umano</option>
             <option value="bot">Bot</option>
           </select>
+          <label for="setupP1DeckMode">Deck</label>
+          <select id="setupP1DeckMode">
+            <option value="template" selected>Deck automatico Starter</option>
+            <option value="custom">Deck personalizzato salvato</option>
+          </select>
+          <div class="setupDeckInfo" id="setupP1DeckInfo">Deck automatico Starter.</div>
         </section>
 
         <section class="setupSideBox faction-exordium-box">
@@ -95,6 +101,12 @@
             <option value="bot">Bot</option>
             <option value="human">Umano</option>
           </select>
+          <label for="setupP2DeckMode">Deck</label>
+          <select id="setupP2DeckMode">
+            <option value="template" selected>Deck automatico Starter</option>
+            <option value="custom">Deck personalizzato salvato</option>
+          </select>
+          <div class="setupDeckInfo" id="setupP2DeckInfo">Deck automatico Starter.</div>
         </section>
       </div>
 
@@ -133,11 +145,13 @@
         <label class="checkline setupCheckline"><input id="setupAutoResignToggle" type="checkbox" checked /> Resa tecnica automatica dei bot</label>
       </section>
 
+      <div class="setupDeckError" id="setupDeckError" aria-live="polite"></div>
+
       <div class="setupScreenActions">
         <button class="ghost" id="setupBackMenuBtn" type="button">Torna al menu</button>
         <button class="primary" id="setupStartGameBtn" type="button">Avvia partita</button>
       </div>
-      <p class="mainMenuNotes">Build <span id="setupBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span> · <span id="setupBuildName">Deck Builder Read/Validate Foundation</span></p>
+      <p class="mainMenuNotes">Build <span id="setupBuildVersion">C2-STABLE-1-F9I1-APK-M4c</span> · <span id="setupBuildName">Card Renderer Preview Foundation</span></p>
     </div>
   </section>
 
@@ -148,10 +162,22 @@
         <div>
           <div class="mainMenuKicker">Deck Builder</div>
           <h2>Costruisci deck</h2>
-          <p class="deckBuilderIntro">F9H1 è una fondazione di lettura e validazione: mostra pool, starter esclusi, template deck e regole copie. Non salva deck e non modifica le partite.</p>
+          <p class="deckBuilderIntro">F9I1 mantiene Deck Builder e storage invariati ma aggiunge una vera anteprima carta: selezioni una riga del draft o del pool e vedi il renderer fondato su catalogo, manifest asset e geometrie del Card Composer.</p>
         </div>
         <div class="deckBuilderHeaderActions">
           <button class="ghost" id="deckBuilderCopyJsonBtn" type="button">Copia report JSON</button>
+          <button class="ghost" id="deckBuilderCopyDeckJsonBtn" type="button">Copia deck JSON</button>
+          <button class="ghost" id="deckBuilderSaveBtn" type="button">Salva deck valido</button>
+          <button class="ghost" id="deckBuilderLoadSavedBtn" type="button">Carica salvato</button>
+          <button class="danger" id="deckBuilderDeleteSavedBtn" type="button">Elimina salvato</button>
+          <button class="ghost" id="deckBuilderExportAllDecksBtn" type="button">Scarica tutti deck .json</button>
+          <button class="ghost" id="deckBuilderCopyAllDecksBtn" type="button">Copia tutti deck JSON</button>
+          <button class="ghost" id="deckBuilderImportDecksBtn" type="button">Importa da file .json</button>
+          <button class="ghost" id="deckBuilderPasteImportBtn" type="button">Incolla JSON</button>
+          <input id="deckBuilderImportDecksFile" type="file" accept="application/json,.json" hidden>
+          <button class="ghost" id="deckBuilderAssetManifestBtn" type="button">Copia manifest asset carte</button>
+          <button class="ghost" id="deckBuilderResetTemplateBtn" type="button">Ripristina template</button>
+          <button class="ghost" id="deckBuilderClearBtn" type="button">Svuota draft</button>
           <button class="primary" data-app-back-menu type="button">Torna al menu</button>
         </div>
       </div>
@@ -165,10 +191,48 @@
           <label for="deckBuilderCommanderSelect">Comandante</label>
           <select id="deckBuilderCommanderSelect"></select>
         </div>
-        <div class="deckBuilderMeta" id="deckBuilderMetaLine">C2-STABLE-1-F9H1-APK-M4c · read/validate only</div>
+        <div class="deckBuilderMeta" id="deckBuilderMetaLine">C2-STABLE-1-F9I1-APK-M4c · saved deck gallery</div>
       </div>
 
       <section id="deckBuilderSummary" class="deckBuilderSummary" aria-live="polite"></section>
+      <div id="deckBuilderFeedback" class="deckBuilderFeedback" aria-live="polite"></div>
+
+      <section class="deckBuilderBox deckBuilderPreviewBox">
+        <div class="deckBuilderBoxTitleRow">
+          <h3>Anteprima renderer carta</h3>
+          <span class="help">Clicca una carta nel draft o nel pool. Il renderer usa frame/placeholder locali e mostra anche i path asset previsti.</span>
+        </div>
+        <div class="deckBuilderPreviewLayout">
+          <div class="deckBuilderPreviewCanvasWrap">
+            <canvas id="deckBuilderCardPreviewCanvas" width="1024" height="1536" aria-label="Anteprima carta Arena Rubra"></canvas>
+          </div>
+          <div class="deckBuilderPreviewInfo">
+            <div id="deckBuilderCardPreviewMeta" class="deckBuilderMeta">Anteprima non inizializzata.</div>
+            <div id="deckBuilderCardPreviewBody" class="deckBuilderPreviewBody"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="deckBuilderBox deckBuilderSavedGalleryBox">
+        <div class="deckBuilderBoxTitleRow">
+          <h3>Deck salvati / importati</h3>
+          <span class="help">Gallery persistente locale. Carica un deck per richiamarlo nel draft.</span>
+        </div>
+        <div id="deckBuilderSavedGallery" class="deckBuilderSavedGallery" aria-live="polite"></div>
+      </section>
+
+      <section id="deckBuilderImportTextBox" class="deckBuilderImportTextBox" hidden>
+        <label for="deckBuilderImportTextArea">Importa deck da testo JSON</label>
+        <p>Incolla qui il contenuto integrale del file <code>.json</code> esportato da Arena Rubra. Non inserire un percorso file o un indirizzo: deve essere proprio il testo JSON completo, con parentesi graffe iniziali/finali.</p>
+        <textarea id="deckBuilderImportTextArea" spellcheck="false" placeholder='{
+  "kind": "arena-rubra-custom-decks",
+  "decks": { ... }
+}'></textarea>
+        <div class="deckBuilderImportActions">
+          <button class="primary" id="deckBuilderImportTextConfirmBtn" type="button">Importa testo JSON</button>
+          <button class="ghost" id="deckBuilderImportTextCancelBtn" type="button">Annulla</button>
+        </div>
+      </section>
 
       <div class="deckBuilderColumns">
         <section class="deckBuilderBox">
@@ -176,10 +240,10 @@
           <div id="deckBuilderStarterBox"></div>
         </section>
         <section class="deckBuilderBox">
-          <h3>Template deck generato</h3>
+          <h3>Deck draft locale</h3>
           <div class="deckBuilderTableWrap">
             <table class="deckBuilderTable">
-              <thead><tr><th>ID</th><th>Carta</th><th>Ruolo</th><th>ENE</th><th>Copie</th><th>Tipo</th></tr></thead>
+              <thead><tr><th></th><th>ID</th><th>Carta</th><th>Ruolo</th><th>ENE</th><th>Copie</th><th>Tipo</th></tr></thead>
               <tbody id="deckBuilderDeckBody"></tbody>
             </table>
           </div>
@@ -190,7 +254,7 @@
         <h3>Pool legale della fazione</h3>
         <div class="deckBuilderTableWrap deckBuilderPoolTableWrap">
           <table class="deckBuilderTable">
-            <thead><tr><th>ID</th><th>Carta</th><th>Ruolo</th><th>Tipo</th><th>ENE</th><th>Nel template</th><th>Testo / nota</th></tr></thead>
+            <thead><tr><th></th><th>ID</th><th>Carta</th><th>Ruolo</th><th>Tipo</th><th>ENE</th><th>Nel draft</th><th>Testo / nota</th></tr></thead>
             <tbody id="deckBuilderPoolBody"></tbody>
           </table>
         </div>
@@ -201,7 +265,7 @@
   <section id="appPlaceholderScreen" class="appScreen appPlaceholderScreen" data-app-screen-panel="placeholder" aria-label="Placeholder schermata futura">
     <div class="placeholderCard">
       <h2>Schermata futura</h2>
-      <p id="appPlaceholderMessage">Placeholder F9H1.</p>
+      <p id="appPlaceholderMessage">Placeholder F9I1.</p>
       <button class="primary" data-app-back-menu type="button">Torna al menu</button>
     </div>
   </section>
@@ -213,7 +277,7 @@
       <button class="primary topBarBtn" id="newGameBtn" type="button">Nuova partita</button>
     </div>
     <div class="topBarTitle">
-      <h1>ARENA RUBRA - <span id="topBuildStage">Starter Game ALPHA</span> <span>(<span id="topBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span>)</span></h1>
+      <h1>ARENA RUBRA - <span id="topBuildStage">Starter Game ALPHA</span> <span>(<span id="topBuildVersion">C2-STABLE-1-F9I1-APK-M4c</span>)</span></h1>
     </div>
     <div class="topBarAction topBarRight">
       <button class="danger topBarBtn" id="endTurnBtn" type="button">Fine turno</button>
@@ -229,7 +293,7 @@
     <span class="hudChip" id="gameHudCards">Deck/Mano/Scarti —</span>
     <span class="hudChip hudMode" id="gameHudMode">Pronto</span>
     <span class="hudChip hudCamera" id="gameHudCamera">Camera: Fit</span>
-    <span class="hudChip hudBuild" id="gameHudBuild">C2-STABLE-1-F9H1-APK-M4c</span>
+    <span class="hudChip hudBuild" id="gameHudBuild">C2-STABLE-1-F9I1-APK-M4c</span>
   </section>
 
   <main class="app mapFirstGameApp" id="mapFirstGameApp">
@@ -259,6 +323,11 @@
               <option value="human">Umano</option>
               <option value="bot">Bot</option>
             </select>
+            <label for="p1DeckMode">Giocatore 1 · Deck</label>
+            <select id="p1DeckMode">
+              <option value="template" selected>Automatico Starter</option>
+              <option value="custom">Personalizzato salvato</option>
+            </select>
           </div>
         </div>
         <div class="row playerSetupRow">
@@ -281,6 +350,11 @@
             <select id="p2Mode">
               <option value="bot">Bot</option>
               <option value="human">Umano</option>
+            </select>
+            <label for="p2DeckMode">Giocatore 2 · Deck</label>
+            <select id="p2DeckMode">
+              <option value="template" selected>Automatico Starter</option>
+              <option value="custom">Personalizzato salvato</option>
             </select>
           </div>
         </div>
@@ -323,7 +397,7 @@
 
         <div class="unitCard" id="turnInfo"></div>
         <div class="help">
-          <strong>Regole Starter Freeze <span id="freezeRulesBuildVersion">C2-STABLE-1-F9H1-APK-M4c</span>:</strong> Ogni fazione può scegliere 1 comandante tra 2 opzioni; il comandante scelto entra come unica carta comandante del deck/mano iniziale.  il QG resta una cella-obiettivo vuota e occupabile. Si vince se una propria unità occupa il QG avversario mentre si controlla almeno un PS. Le unità possono sbarcare accanto al QG o accanto a edifici alleati. Income: 3 ENE base + PS. Preset <b>Standard</b>: Pressione dal round 30, cap leggere 10, veicoli movimento 1. Preset <b>Rapida/Competitive</b>: Pressione dal round 20, cap leggere 5 per fazione / 7 per Liberti, veicoli movimento 2. Pesanti 2 in campo per blueprint; elite/pivot e comandante 1; massimo 6 strutture, Agathoi 7. Il sanguinamento infligge danno diretto agli HP; Spine punisce chi attacca. Dottrine economiche a inizio turno: Nexus ottimizza se tiene 2 PS senza vantaggio ENE eccessivo; Exordium premia parità fanteria/veicoli; Liberti premia minaccia al QG; Agathoi cresce sulla pressione subita; Fabeot prospera quando l'avversario resta a 0 ENE. Mano: cap 10 carte; le pescate oltre cap vanno direttamente negli scarti. Se deck e mano sono vuoti, con 5 ENE si rimescolano gli scarti nel deck e si pescano 3 carte. Dottrina AI C2e-4h: base generale C2e-4a2, integration/regression C2e-4g e dottrina superiore matchup attive per Exordium, Fabeot e Agathoi. Fine Balance C2e-5a: Protocollo di Blocco Nexus infligge 1 danno e costa 1 ENE. MAP1 C2e-6a validata: mappa Starter radius 6, QG sui nuovi bordi esterni e PS invariati per funzione tattica con maggiore spazio di manovra laterale/esterno. Starter Logic Freeze C2-STABLE-1: da questa build la logica Starter è candidata al congelamento; ammessi solo bugfix e interventi non sistemici. Fabeot usa QG bait, split pressure, pazienza nella metà alleata e surrender pressure per colpire comandanti, pivot, PS, mano e risorse quando l’avversario è scoperto. UX tattica D1b: le unità mostrano in mappa HP, DEF e ATT in formato compatto e leggibile; la selezione di una propria unità mobile evidenzia subito le celle raggiungibili.
+          <strong>Regole Starter Freeze <span id="freezeRulesBuildVersion">C2-STABLE-1-F9I1-APK-M4c</span>:</strong> Ogni fazione può scegliere 1 comandante tra 2 opzioni; il comandante scelto entra come unica carta comandante del deck/mano iniziale.  il QG resta una cella-obiettivo vuota e occupabile. Si vince se una propria unità occupa il QG avversario mentre si controlla almeno un PS. Le unità possono sbarcare accanto al QG o accanto a edifici alleati. Income: 3 ENE base + PS. Preset <b>Standard</b>: Pressione dal round 30, cap leggere 10, veicoli movimento 1. Preset <b>Rapida/Competitive</b>: Pressione dal round 20, cap leggere 5 per fazione / 7 per Liberti, veicoli movimento 2. Pesanti 2 in campo per blueprint; elite/pivot e comandante 1; massimo 6 strutture, Agathoi 7. Il sanguinamento infligge danno diretto agli HP; Spine punisce chi attacca. Dottrine economiche a inizio turno: Nexus ottimizza se tiene 2 PS senza vantaggio ENE eccessivo; Exordium premia parità fanteria/veicoli; Liberti premia minaccia al QG; Agathoi cresce sulla pressione subita; Fabeot prospera quando l'avversario resta a 0 ENE. Mano: cap 10 carte; le pescate oltre cap vanno direttamente negli scarti. Se deck e mano sono vuoti, con 5 ENE si rimescolano gli scarti nel deck e si pescano 3 carte. Dottrina AI C2e-4h: base generale C2e-4a2, integration/regression C2e-4g e dottrina superiore matchup attive per Exordium, Fabeot e Agathoi. Fine Balance C2e-5a: Protocollo di Blocco Nexus infligge 1 danno e costa 1 ENE. MAP1 C2e-6a validata: mappa Starter radius 6, QG sui nuovi bordi esterni e PS invariati per funzione tattica con maggiore spazio di manovra laterale/esterno. Starter Logic Freeze C2-STABLE-1: da questa build la logica Starter è candidata al congelamento; ammessi solo bugfix e interventi non sistemici. Fabeot usa QG bait, split pressure, pazienza nella metà alleata e surrender pressure per colpire comandanti, pivot, PS, mano e risorse quando l’avversario è scoperto. UX tattica D1b: le unità mostrano in mappa HP, DEF e ATT in formato compatto e leggibile; la selezione di una propria unità mobile evidenzia subito le celle raggiungibili.
         </div>
 
 
@@ -346,7 +420,7 @@
       <details id="statsDetails" open>
         <summary>Statistiche matchup</summary>
         <div class="body stack">
-          <div class="help">F9F aggiunge statistiche partita in memoria alimentate dagli eventi tipizzati. Il registro matchup storico resta salvato nel browser locale.</div>
+          <div class="help">F9P1 usa uno storage layer unico: matchStats resta in memoria per la partita corrente, mentre storico matchup e storico partite leggero sono persistenti nel browser/app con export/import JSON.</div>
           <div class="statsToolbar">
             <button class="ghost" id="copyMatchStatsJsonBtn" type="button">Copia statistiche JSON</button>
             <button class="ghost" id="copyMatchReportBtn" type="button">Copia report sintetico</button>
@@ -355,7 +429,16 @@
           </div>
           <div id="currentMatchStatsPanel"></div>
           <details open>
-            <summary>Storico matchup browser</summary>
+            <summary>Storico partite persistente</summary>
+            <div class="statsToolbar">
+              <button class="ghost" id="copyMatchHistoryJsonBtn" type="button">Copia storico JSON</button>
+              <button class="ghost" id="importMatchHistoryJsonBtn" type="button">Importa storico JSON</button>
+              <button class="danger" id="resetMatchHistoryBtn" type="button">Reset storico partite</button>
+            </div>
+            <div id="matchHistoryPanel"></div>
+          </details>
+          <details>
+            <summary>Storico matchup browser / CSV legacy</summary>
             <div class="statsToolbar">
               <button class="ghost" id="resetStatsBtn" type="button">Reset statistiche</button>
               <button class="ghost" id="copyStatsBtn" type="button">Copia CSV matchup</button>
@@ -455,6 +538,7 @@
   <script src="data/maps.js"></script>
 <script src="src/build_info.js"></script>
 <script src="src/constants.js"></script>
+<script src="src/storage.js"></script>
 <script src="src/enums.js"></script>
 <script src="src/hex.js"></script>
 <script src="src/events.js"></script>
@@ -468,6 +552,8 @@
 <script src="src/state.js"></script>
 <script src="src/cards.js"></script>
 <script src="src/deck.js"></script>
+<script src="src/card_assets.js"></script>
+<script src="src/card_renderer.js"></script>
 <script src="src/deck_builder.js"></script>
 <script src="src/rules.js"></script>
 <script src="src/economy.js"></script>

@@ -195,7 +195,7 @@ function closeActionsPanelAfterAcceptedTactic() {
 
 function renderGameHud() {
   if (typeof document === "undefined") return;
-  const buildLabel = typeof buildInfoLabel === "function" ? buildInfoLabel() : "C2-STABLE-1-F9H1-APK-M4c";
+  const buildLabel = typeof buildInfoLabel === "function" ? buildInfoLabel() : "C2-STABLE-1-F9P1b-APK-M4c";
   safeText("gameHudBuild", buildLabel);
   syncSelectedUnitFloatState();
   setLogDockCollapsed(gameScreenUiState.logDockCollapsed);

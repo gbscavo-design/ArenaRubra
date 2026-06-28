@@ -28,7 +28,7 @@ const CENTER_X = 460;
 const CENTER_Y = 390;
 const HEX_SIZE = 31;
 const CONFIG = Object.freeze({
-      version: (typeof buildInfoLabel === "function" ? buildInfoLabel() : "C2-STABLE-1-F9H1-APK-M4c"),
+      version: (typeof buildInfoLabel === "function" ? buildInfoLabel() : "C2-STABLE-1-F9P1b-APK-M4c"),
       map: { radius: RADIUS, hqPositions: HQ_POS, psCoords: PS_COORDS },
       pacePresets: PACE_PRESETS,
       economy: { startEne: START_ENE, baseIncome: BASE_INCOME, supportsCostModifiers:true, supportsIncomeModifiers:true, maxHandSize:10, deckRecoveryCost:5, deckRecoveryDraw:3 },

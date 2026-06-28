@@ -1,0 +1,7 @@
+CHECK C2e-4g1 APK-M2b
+
+- node --check src/*.js data/*.js: OK
+- Scan funzioni duplicate src/*.js: OK
+- Verifica presenza src/splash.js: OK
+- Verifica classi mobile-apk-m2b e override non-fullscreen: OK
+- ZIP integrity: OK

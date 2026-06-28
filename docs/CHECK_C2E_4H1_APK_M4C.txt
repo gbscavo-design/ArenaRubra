@@ -1,0 +1,24 @@
+C2e-4h1 APK-M4c – Splash / Audio Asset Microfix
+
+Base:
+- C2e-4h APK-M4c Superior Doctrine Calibration.
+
+Controlli richiesti:
+- Verificare che il nuovo logo G vibe dev compaia con fade dal nero.
+- Verificare che la prima schermata duri circa 5 secondi prima del passaggio alla schermata Arena Rubra.
+- Verificare che la nuova traccia parta quando compare il logo G vibe dev, salvo blocco autoplay del browser/WebView; in quel caso deve partire al primo gesto utente.
+- Verificare che la musica resti in loop durante la schermata Arena Rubra e dopo l'ingresso nel gioco.
+- Verificare che il volume sia leggermente più basso rispetto alla build precedente.
+- Verificare che nella schermata Arena Rubra non compaia testo HTML duplicato “G Vibe Dev”.
+- Verificare che la nuova immagine Arena Rubra sia usata come title screen.
+- Verificare che il gameplay e la UI mobile M4c restino invariati.
+
+Non modificato:
+- Gameplay.
+- AI.
+- Deck.
+- Tattiche.
+- Bilanciamento.
+- Mappa.
+- Roster.
+- Regola danno no-overflow.

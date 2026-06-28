@@ -1,0 +1,12 @@
+CHECK C2e-2
+
+1. Avvia partita con bot avanzato.
+2. Verifica uso tattiche C2 dalla mano.
+3. Verifica limite massimo 2 tattiche C2 mano per turno.
+4. Verifica che con mano piena il bot eviti pescate non convenienti.
+5. Verifica AoE: deve preferire 2+ nemici e non colpire troppi alleati.
+6. Verifica Fabeot: bounce/conversione/furto/blocco mano usati su bersagli sensati.
+7. Verifica Liberti: spawn e buff superiorità usati meglio con campo scarico/pressione.
+8. Verifica Agathoi: trappole/DEF/strutture vicino a PS o minacce.
+9. Verifica Nexus/Exordium: identità tattica mantenuta.
+10. Regressione: comandante scelto, income 3, cap mano, recupero deck, Esproprio, Missile Jam.

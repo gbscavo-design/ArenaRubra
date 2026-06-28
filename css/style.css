@@ -2641,3 +2641,315 @@ body.app-screen-game:not(.mobile-apk-m4) .gameActionBar {
     min-width: 0;
   }
 }
+
+/* =====================================================
+   F9H2 – Deck Save/Load + Setup Integration
+   ===================================================== */
+.deckBuilderHeaderActions {
+  min-width: 220px;
+}
+.deckBuilderHeaderActions .ghost,
+.deckBuilderHeaderActions .primary {
+  width: 100%;
+}
+.deckBuilderTable th:first-child,
+.deckBuilderTable td:first-child {
+  width: 38px;
+  text-align: center;
+  white-space: nowrap;
+}
+.miniBtn {
+  min-width: 27px;
+  min-height: 25px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-weight: 900;
+  line-height: 1;
+}
+.deckBuilderAddBtn:not(:disabled) {
+  border-color: rgba(79,157,88,.45);
+}
+.deckBuilderRemoveBtn {
+  border-color: rgba(216,74,68,.42);
+}
+.deckBuilderTable tr.deckBuilderViolationRow td {
+  background: rgba(216,74,68,.12);
+}
+.deckBuilderTable button:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+}
+@media (max-width: 900px) {
+  .deckBuilderHeaderActions {
+    grid-template-columns: 1fr 1fr;
+  }
+  .deckBuilderHeaderActions .primary {
+    grid-column: 1 / -1;
+  }
+}
+
+/* F9H3 – deck save/load + setup integration */
+.setupDeckInfo,
+.setupDeckError,
+.deckBuilderFeedback {
+  margin-top: 6px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 10px;
+  padding: 7px 9px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+  background: rgba(0,0,0,.22);
+}
+.setupDeckInfo.good,
+.deckBuilderFeedback.good {
+  border-color: rgba(79,157,88,.55);
+  color: #dcffe1;
+}
+.setupDeckInfo.bad,
+.setupDeckError.bad,
+.deckBuilderFeedback.bad {
+  border-color: rgba(216,74,68,.62);
+  color: #ffd8d4;
+}
+.setupDeckError:empty,
+.deckBuilderFeedback:empty {
+  display: none;
+}
+.deckBuilderSavedBadge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border: 1px solid rgba(79,157,88,.45);
+  border-radius: 999px;
+  color: #dcffe1;
+  font-size: 11px;
+}
+
+/* F9P1a – Deck import/export UX hotfix */
+.deckBuilderImportTextBox {
+  margin: 10px 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(227,189,103,.35);
+  border-radius: 16px;
+  background: rgba(0,0,0,.30);
+}
+.deckBuilderImportTextBox[hidden] { display: none !important; }
+.deckBuilderImportTextBox label {
+  display: block;
+  margin-bottom: 6px;
+  color: #f1d37b;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 12px;
+}
+.deckBuilderImportTextBox p {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.deckBuilderImportTextBox textarea {
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 12px;
+  background: rgba(0,0,0,.38);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.deckBuilderImportActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 9px;
+}
+
+/* F9P1b – Saved Deck Gallery Microfix */
+.deckBuilderSavedGalleryBox {
+  margin: 12px 0 14px;
+}
+.deckBuilderBoxTitleRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+.deckBuilderBoxTitleRow .help {
+  color: var(--muted);
+  font-size: 12px;
+}
+.deckBuilderSavedGalleryList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 10px;
+}
+.deckBuilderSavedDeckCard {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(0,0,0,.26);
+}
+.deckBuilderSavedDeckCard.selected {
+  border-color: rgba(227,189,103,.55);
+  box-shadow: 0 0 0 1px rgba(227,189,103,.18) inset;
+}
+.deckBuilderSavedDeckTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: start;
+}
+.deckBuilderSavedDeckTop strong {
+  display: block;
+  color: #fff4cf;
+  font-size: 13px;
+}
+.deckBuilderSavedDeckTop span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 3px;
+  word-break: break-word;
+}
+.deckBuilderSavedState {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.deckBuilderSavedState.good {
+  border-color: rgba(79,157,88,.55);
+  color: #dcffe1;
+}
+.deckBuilderSavedState.bad {
+  border-color: rgba(216,74,68,.62);
+  color: #ffd8d4;
+}
+.deckBuilderSavedDeckMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.deckBuilderSavedDeckMeta span {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.07);
+  color: var(--muted);
+  font-size: 11px;
+}
+.deckBuilderSavedDeckNote {
+  min-height: 34px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.deckBuilderSavedDeckActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+.deckBuilderSavedDeckActions button {
+  flex: 1 1 120px;
+  min-height: 32px;
+}
+.deckBuilderSavedDeckActions button:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+.deckBuilderEmptyGallery {
+  padding: 12px;
+  border: 1px dashed rgba(255,255,255,.14);
+  border-radius: 14px;
+  color: var(--muted);
+  background: rgba(0,0,0,.18);
+  font-size: 12px;
+}
+
+
+/* F9I1 – Card Renderer Preview Foundation */
+.deckBuilderPreviewBox {
+  margin: 12px 0 14px;
+}
+.deckBuilderPreviewLayout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.deckBuilderPreviewCanvasWrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+#deckBuilderCardPreviewCanvas {
+  width: min(100%, 320px);
+  aspect-ratio: 1024 / 1536;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(0,0,0,.3);
+  box-shadow: 0 18px 36px rgba(0,0,0,.28);
+}
+.deckBuilderPreviewInfo {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+.deckBuilderPreviewBody {
+  display: grid;
+  gap: 10px;
+}
+.deckBuilderPreviewStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.deckBuilderPreviewStats span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.07);
+  color: var(--muted);
+  font-size: 12px;
+}
+.deckBuilderPreviewDesc,
+.deckBuilderPreviewPaths,
+.deckBuilderPreviewHelp {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.deckBuilderPreviewPaths code {
+  color: #fff4cf;
+  word-break: break-all;
+}
+.deckBuilderTable tr[data-db-preview-card] {
+  cursor: pointer;
+}
+.deckBuilderTable tr.deckBuilderPreviewSelectedRow td {
+  background: rgba(227,189,103,.14);
+}
+@media (max-width: 900px) {
+  .deckBuilderPreviewLayout {
+    grid-template-columns: 1fr;
+  }
+  .deckBuilderPreviewCanvasWrap {
+    justify-content: center;
+  }
+}

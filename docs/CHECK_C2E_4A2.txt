@@ -1,0 +1,7 @@
+CHECK C2e-4a2
+1. Bot 0 PS: priorità a PS proprio/centrale.
+2. Nemico 3 PS: rompere controllo PS prima di push QG/pressione elegante.
+3. Difesa QG: creare anche linea di ripartenza verso PS.
+4. Mine awareness: evitare celle minate/pericolose salvo all-in.
+5. Vantaggio con QG chiudibile: goal vittoria_qg.
+6. Regressione: movimento immediato D1b, stat mappa, tattiche C2, deck recovery.

@@ -1,0 +1,6 @@
+CHECK C2e-4a1
+1. Bot vs bot Avanzata.
+2. Osservare round 1-6: il bot deve ancora raggiungere i PS, ma meno spesso con unità isolate contro 2+ nemici.
+3. Osservare Liberti: può sacrificare starter, ma dovrebbe farlo più spesso con follow-up vicino o in emergenza reale.
+4. Verificare che la modalità tutto-per-tutto/emergenza non sia bloccata.
+5. Regressione: tattiche terreno, movimento immediato D1, stat in mappa D1b.

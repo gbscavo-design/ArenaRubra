@@ -1,0 +1,6 @@
+CHECK C2e-4e Agathoi
+1. node --check src/*.js data/*.js.
+2. Test Agathoi vs Liberti: rete strutture / linea verde / anti-swarm.
+3. Test Agathoi vs Nexus: PS centrale e strutture utili, non solo arretrate.
+4. Test Agathoi vs Exordium: difesa contro sfondamento, counterattack/thorns.
+5. Verificare regressione profili Exordium, Nexus, Liberti.

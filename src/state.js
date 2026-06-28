@@ -23,6 +23,14 @@ function createMatchId() {
   return Date.now() + "-" + Math.random().toString(36).slice(2, 8);
 }
 
+function readDeckSetupForSide(side) {
+  const modeEl = $(`p${side}DeckMode`) || $(`setupP${side}DeckMode`);
+  const mode = modeEl ? modeEl.value : "template";
+  return {
+    mode: mode === "custom" ? "custom" : "template"
+  };
+}
+
 function readGameSetupFromDom() {
   return {
     factions: {
@@ -32,6 +40,10 @@ function readGameSetupFromDom() {
     selectedCommanders: {
       1: $("p1Commander") ? $("p1Commander").value : null,
       2: $("p2Commander") ? $("p2Commander").value : null
+    },
+    selectedDecks: {
+      1: readDeckSetupForSide(1),
+      2: readDeckSetupForSide(2)
     },
     modes: {
       1: $("p1Mode").value,
@@ -52,6 +64,7 @@ function createInitialGameState(setup) {
     units: [],
     factions,
     selectedCommanders: setup.selectedCommanders || {},
+    selectedDecks: setup.selectedDecks || { 1: { mode: "template" }, 2: { mode: "template" } },
     turnOrder: firstPlayer === 1 ? [1, 2] : [2, 1],
     orderIndex: 0,
     currentPlayer: firstPlayer,

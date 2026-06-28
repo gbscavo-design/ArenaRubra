@@ -1,0 +1,1 @@
+CHECK C2e-4c: node --check src/*.js data/*.js; test Nexus vs Exordium/Nexus vs Liberti bot avanzati.

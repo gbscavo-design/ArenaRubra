@@ -1,0 +1,14 @@
+C2e-4h2 APK-M4c – Full Log Export Microfix
+
+Base: C2e-4h1 APK-M4c Splash / Audio Asset Microfix
+
+Controlli richiesti:
+- node --check src/*.js: OK
+- node --check data/*.js: OK
+- duplicate function scan src/data: OK
+- zip integrity: OK
+
+Verifica funzionale attesa:
+- In match con oltre 1000 eventi, Copia log / Esporta log .txt deve includere gli eventi iniziali (#0001 ecc.).
+- Header export deve riportare EventCount e EventSeqMax.
+- Nessun cambiamento gameplay/AI/balance.

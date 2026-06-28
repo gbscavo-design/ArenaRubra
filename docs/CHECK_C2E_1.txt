@@ -1,0 +1,13 @@
+CHECK C2e-1
+
+1. Avvia partita con G2 bot avanzato.
+2. Verifica che il bot giochi unità dalla mano come prima.
+3. Verifica che il bot usi tattiche C2 dalla mano quando ha ENE e bersagli validi.
+4. Verifica che il bot non usi più di 2 tattiche C2 dalla mano nello stesso turno.
+5. Testa bot Nexus con Avatex e Unità Comando.
+6. Testa bot Exordium con Varran e Nemira.
+7. Verifica che Varran, dopo Ordine di Varran, possa ancora agire.
+8. Testa bot Liberti con Rauk e Pravus.
+9. Testa bot Agathoi con Alexandros e Dycaios.
+10. Testa bot Fabeot con Gerarca ed Emissario.
+11. Regressione: income 3, cap mano 10, recupero deck, tutte le 59 tattiche giocabili lato umano.

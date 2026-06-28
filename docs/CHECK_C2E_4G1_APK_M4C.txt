@@ -1,0 +1,12 @@
+CHECK C2e-4g1 APK-M4c
+
+Base verificata: C2e-4g1-APK-M4b Mobile UI Microfix.
+
+Controlli previsti:
+- Correzione label M4bb -> M4c: OK.
+- Version label coerente in index/constants/game/README/mobile: OK.
+- Nessuna modifica gameplay/AI/deck/balance: OK.
+- Danno normale no-overflow non modificato: OK.
+- node --check src/*.js e data/*.js: OK.
+- controllo funzioni duplicate: OK.
+- zip integrity: OK nel pacchetto finale.

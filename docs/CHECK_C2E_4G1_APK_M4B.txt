@@ -1,0 +1,11 @@
+CHECK C2e-4g1 APK-M4b
+
+- node --check src/*.js data/*.js: OK
+- scan funzioni duplicate src/*.js: OK
+- asset intro/audio presenti: OK
+- ZIP integrity: OK
+
+Da testare su APK:
+- Opz apre pannello alto e scrollabile;
+- Mano resta sopra gli altri pannelli;
+- premendo Gioca carta / Costruisci carta / Gioca ora il pannello Mano si chiude e lascia selezionare mappa/bersaglio.

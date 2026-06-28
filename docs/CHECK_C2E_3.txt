@@ -1,0 +1,30 @@
+CHECK C2e-3 – Bot Strategic Layer / Structure Cap Update
+
+1. Cap strutture
+   - Verificare che una fazione non Agathoi possa arrivare a 6 strutture.
+   - Verificare che Agathoi possa arrivare a 7 strutture.
+   - Verificare che il blocco cap scatti dopo il valore corretto.
+
+2. Bot PS centrale
+   - Avviare partite bot vs bot o umano vs bot.
+   - Verificare che il bot dia più priorità al PS centrale se non controllato.
+
+3. Threat map semplice
+   - Osservare se comandanti/elite/pivot evitano mosse palesemente suicide quando esiste un'alternativa ragionevole.
+   - Verificare che il bot continui comunque ad attaccare/contestare quando è in svantaggio.
+
+4. Riserva ENE
+   - Verificare che il bot non spenda sempre tutta l'ENE prima di usare tattiche importanti.
+   - Verificare che continui a comprare/spawnare quando è in svantaggio o deve contestare PS.
+
+5. Mano/deck quasi vuoti
+   - Con deck quasi vuoto e poche carte in mano, verificare che il bot giochi più volentieri carte dalla mano.
+   - Verificare recupero deck quando deck vuoto + mano vuota + 5 ENE.
+
+6. Regressione
+   - Scelta comandante.
+   - Tattiche C2 bot C2e-1/C2e-2.
+   - Income 3.
+   - Cap mano 10.
+   - Missile Jam.
+   - Esproprio di Mano.

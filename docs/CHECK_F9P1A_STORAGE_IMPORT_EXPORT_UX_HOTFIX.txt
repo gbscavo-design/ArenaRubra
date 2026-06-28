@@ -1,0 +1,7 @@
+F9P1a check
+- node --check src/*.js data/*.js: OK
+- duplicate function scan: OK
+- duplicate HTML id scan: OK
+- export/import deck UX static checks: OK
+- storage download helper present: OK
+- zip integrity: OK

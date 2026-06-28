@@ -1,0 +1,6 @@
+CHECK C2e-4d
+1. node --check src/*.js data/*.js
+2. Test Liberti vs Nexus / Liberti vs Exordium / Liberti vs Agathoi.
+3. Osservare PS: sacrifici utili sì, suicidi isolati ripetuti no.
+4. Osservare QG: vera pressione quando ci sono almeno due unità in manovra.
+5. Verificare che profili Exordium e Nexus restino attivi.

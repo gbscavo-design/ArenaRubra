@@ -2,7 +2,7 @@
 
 // Arena Rubra – Fase B4d
 // Stats extraction prudente.
-// Questo file contiene registro matchup, localStorage, aggregazioni e CSV.
+// Questo file contiene registro matchup, storage persistente, aggregazioni e CSV.
 // Non introduce nuove meccaniche e non modifica il gameplay.
 
 // Nota:
@@ -12,11 +12,13 @@
 // - renderMatchupStats/escapeHtml da render.js
 
 function loadMatchStats() {
+      if (typeof arenaStorageReadMatchupStats === "function") return arenaStorageReadMatchupStats();
       try { return JSON.parse(localStorage.getItem(STATS_STORAGE_KEY) || "[]"); }
       catch (_) { return []; }
     }
 
     function saveMatchStats(items) {
+      if (typeof arenaStorageWriteMatchupStats === "function") { arenaStorageWriteMatchupStats(items); return; }
       try { localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(items)); }
       catch (_) { /* localStorage non disponibile */ }
     }
@@ -84,9 +86,54 @@ function loadMatchStats() {
       const items = loadMatchStats();
       items.unshift(record);
       saveMatchStats(items.slice(0, 500));
+      const historyRecord = buildPersistentMatchHistoryRecord(record);
+      if (typeof arenaStorageAppendMatchHistory === "function") arenaStorageAppendMatchHistory(historyRecord, 500);
       log(`Statistiche matchup registrate: ${p1Faction} vs ${p2Faction}, vincitore ${record.winnerFaction}, round ${record.round}.`, EventTypes.MATCH_STATS_RECORDED, {
-        record
+        record,
+        historyRecord
       });
+    }
+
+    function buildPersistentMatchHistoryRecord(record) {
+      const stats = state && state.matchStats ? currentMatchStatsObject() : null;
+      const current = stats && stats.current ? stats.current : {};
+      const final = stats && stats.final ? stats.final : current;
+      const selectedDecks = state && state.selectedDecks ? {
+        1: { ...(state.selectedDecks[1] || {}) },
+        2: { ...(state.selectedDecks[2] || {}) }
+      } : { 1:{ mode:"template" }, 2:{ mode:"template" } };
+      return {
+        id: record.id || (state && state.matchId) || "",
+        at: record.at || new Date().toISOString(),
+        build: typeof buildInfoExportMeta === "function" ? buildInfoExportMeta() : { version: currentBuildVersionLabel() },
+        matchId: record.id || (state && state.matchId) || "",
+        p1Faction: record.p1Faction,
+        p2Faction: record.p2Faction,
+        p1Commander: commanderLogLabel(1),
+        p2Commander: commanderLogLabel(2),
+        p1Mode: record.p1Mode,
+        p2Mode: record.p2Mode,
+        selectedDecks,
+        aiMode: record.aiMode,
+        pacePreset: record.pacePreset,
+        map: typeof BUILD_INFO !== "undefined" && BUILD_INFO ? BUILD_INFO.map : "Starter MAP1 radius 6",
+        winnerSide: record.winnerSide,
+        winnerFaction: record.winnerFaction,
+        loserFaction: record.loserFaction,
+        winType: record.winType,
+        round: record.round,
+        eventCount: stats ? stats.eventCount : record.logLines,
+        eventSeqMax: stats ? stats.eventSeqMax : (state ? state.eventSeq || 0 : 0),
+        ps: final && final.ps ? final.ps : { 1: record.ps1, 2: record.ps2 },
+        pressure: final && final.pressure ? final.pressure : { 1: record.pressure1, 2: record.pressure2 },
+        energy: final && final.energy ? final.energy : { 1: record.ene1, 2: record.ene2 },
+        units: final && final.units ? final.units : { 1: record.units1, 2: record.units2 },
+        totals: stats && stats.totals ? { ...stats.totals } : {},
+        players: stats && stats.players ? { 1:{ ...stats.players[1] }, 2:{ ...stats.players[2] } } : {},
+        topTactics: stats ? Object.entries(stats.tactics || {}).sort((a,b)=>Number(b[1]||0)-Number(a[1]||0)).slice(0,8) : [],
+        topAbilities: stats ? Object.entries(stats.abilities || {}).sort((a,b)=>Number(b[1]||0)-Number(a[1]||0)).slice(0,8) : [],
+        message: record.message || ""
+      };
     }
 
     function matchupKey(a, b) { return [a,b].sort().join(" vs "); }
@@ -718,4 +765,67 @@ function copyCurrentMatchReportText() {
 function copyCurrentMatchEventsJson() {
   const text = typeof exportEventsJson === "function" ? exportEventsJson(null) : JSON.stringify((state && state.events) || [], null, 2);
   return f9fCopyText(text, "Eventi JSON copiati negli appunti.");
+}
+
+// =====================================================
+// F9P1 – Match history persistente + import/export JSON
+// =====================================================
+
+function currentPersistentMatchHistoryJson() {
+  if (typeof arenaStorageExportMatchHistoryJson === "function") return arenaStorageExportMatchHistoryJson();
+  return JSON.stringify({ schemaVersion:"legacy", matches:loadMatchStats() }, null, 2);
+}
+
+function copyPersistentMatchHistoryJson() {
+  const text = currentPersistentMatchHistoryJson();
+  if (typeof arenaStorageCopyText === "function") return arenaStorageCopyText(text, "Storico partite JSON copiato negli appunti.");
+  return f9fCopyText(text, "Storico partite JSON copiato negli appunti.");
+}
+
+function importPersistentMatchHistoryJson() {
+  const text = typeof prompt === "function" ? prompt("Incolla JSON storico partite Arena Rubra:", "") : "";
+  if (!text) return false;
+  const result = typeof arenaStorageImportMatchHistoryFromText === "function"
+    ? arenaStorageImportMatchHistoryFromText(text)
+    : { ok:false, imported:0, issues:["storage layer non disponibile"] };
+  const message = result.ok
+    ? `Storico partite importato: ${result.imported} record.`
+    : `Import storico fallito: ${(result.issues || ["nessun record importato"]).join("; ")}`;
+  if (state) log(message);
+  else if (typeof alert === "function") alert(message);
+  renderPersistentMatchHistoryPanel();
+  return result.ok;
+}
+
+function resetPersistentMatchHistory() {
+  if (typeof confirm === "function" && !confirm("Azzerare lo storico partite persistente salvato in questo browser/app?")) return false;
+  const ok = typeof arenaStorageResetMatchHistory === "function" ? arenaStorageResetMatchHistory() : false;
+  if (state) log(ok ? "Storico partite persistente azzerato." : "Reset storico partite fallito.");
+  renderPersistentMatchHistoryPanel();
+  return ok;
+}
+
+function renderPersistentMatchHistoryPanel() {
+  const panel = typeof $ === "function" ? $("matchHistoryPanel") : null;
+  if (!panel) return;
+  const items = typeof arenaStorageReadMatchHistory === "function" ? arenaStorageReadMatchHistory() : [];
+  if (!items.length) {
+    panel.innerHTML = `<div class="help">Nessuna partita nello storico persistente. Verrà aggiunta automaticamente alla prima vittoria/fine partita.</div>`;
+    return;
+  }
+  const rows = items.slice(0, 12).map(r => `
+    <tr>
+      <td>${f9fEscapeHtml(String(r.at || r.recordedAt || "").slice(0, 19).replace("T", " "))}</td>
+      <td>${f9fEscapeHtml(r.p1Faction || "")} vs ${f9fEscapeHtml(r.p2Faction || "")}</td>
+      <td>${f9fEscapeHtml(r.winnerFaction || "—")}</td>
+      <td>${f9fEscapeHtml(r.winType || "—")}</td>
+      <td>${Number(r.round || 0)}</td>
+      <td>${Number(r.eventCount || r.logLines || 0)}</td>
+    </tr>`).join("");
+  panel.innerHTML = `
+    <div class="help">Record persistenti: <strong>${items.length}</strong>. Mostrate le ultime ${Math.min(items.length, 12)} partite.</div>
+    <div class="miniTable"><table>
+      <thead><tr><th>Data</th><th>Matchup</th><th>Vincitore</th><th>Tipo</th><th>Round</th><th>Eventi</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
 }

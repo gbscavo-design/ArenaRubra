@@ -1,6 +1,6 @@
 "use strict";
 
-// Arena Rubra – F9H1 Application Foundation metadata.
+// Arena Rubra – F9I1 Card Renderer Preview Foundation metadata.
 // Single source of truth for visible build/version metadata.
 // Do not hardcode build labels in menu, HUD, log/export or startup messages:
 // read from BUILD_INFO through the helpers below.
@@ -8,13 +8,13 @@
 const BUILD_INFO = Object.freeze({
   appName: "Arena Rubra",
   stage: "Starter Game ALPHA",
-  version: "C2-STABLE-1-F9H1-APK-M4c",
-  buildName: "Deck Builder Read/Validate Foundation",
+  version: "C2-STABLE-1-F9I1-APK-M4c",
+  buildName: "Card Renderer Preview Foundation",
   buildDate: "2026-06-28",
   buildChannel: "freeze-candidate",
   logicBaseline: "C2-STABLE-1-APK-M4c",
   map: "Starter MAP1 radius 6",
-  notes: "Fase 9H1: Deck Builder Read/Validate Foundation. Aggiunge una schermata Costruisci deck di sola lettura/validazione: pool carte per fazione, comandante selezionabile, deck template generato, regole copie e report JSON. Nessun salvataggio e nessun uso del deck builder in partita."
+  notes: "Fase 9I1: Card Renderer Preview Foundation. Mantiene Deck Builder/Storage stabili e aggiunge anteprima carta nel Deck Builder usando manifest asset, frame leggeri locali e placeholder per illustrazioni mancanti."
 });
 
 function buildInfoLabel() {
